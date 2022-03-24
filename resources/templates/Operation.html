@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>操作界面</title>
+    <style>
+        *{
+            /* 页面初始化,清楚元素的内外边距 */
+            padding: 0;
+            margin: 0;
+        }
+
+        body{
+            /* 宽度占浏览器可视区域的高度 */
+            width: 100vm;
+            background-color: #f2f2f2;
+        }
+
+        li{
+            list-style: none;
+        }
+        a{
+            text-decoration: none;
+            color: #000;
+        }
+
+        .navbar{
+            width: 100%;
+            height: 70px;
+            background-color: #fff;
+            /* 盒子阴影 */
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .navbar .nav{
+            width: 1200px;
+            height: 100%;
+            /* 让元素自动水平居中 */
+            margin: 0 auto;
+        }
+
+        .navbar .nav ul{
+            /* 相对定位 */
+            position: relative;
+            /* 弹性布局 */
+            display: flex;
+            /* 让子元素平均分配宽度 */
+            justify-content: space-around;
+            width: 100%;
+            height: 100%;
+        }
+        .navbar .nav ul > li{
+            width: 100%;
+            height: 100%;
+        }
+
+        .navbar .nav ul > li > a{
+            /* 因为a元素是行内元素 必须将其转为行内块或者块级才能设置宽度和高度 */
+            display: block;
+            width: 100%;
+            height: 100%;
+            line-height: 70px;
+            text-align: center;
+        }
+
+        .navbar .nav ul > li ol{
+            width: 100%;
+            background-color: #fff;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+            /* 让盒子先沿着y轴缩放到0 也就是隐藏了 */
+            transform: scaleY(0);
+            /* 我们需要将盒子从上面滑动下来 设置一下缩放的中心点即可 设置到最上面的中间位置 */
+            transform-origin: 50% 0;
+            /* 设置过渡 */
+            transition: all 0.6s;
+        }
+
+        .navbar .nav ul > li ol li{
+            height: 70px;
+            border-bottom: 1px solid rgb(245, 245, 245);
+        }
+
+        .navbar .nav ul > li ol li a{
+            display: block;
+            width: 100%;
+            height: 100%;
+            line-height: 70px;
+            text-align: center;
+        }
+
+        .navbar .nav ul > li ol li:hover{
+            background-color: rgba(0, 0, 0, 0.03);
+        }
+
+        .navbar .nav ul > li:hover ol{
+            transform: scaleY(1);
+        }
+
+        .navbar .nav ul .underline{
+            /* 绝对定位 */
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 240px;
+            height: 6px;
+            /* 设置一下盒子的左上角和右上角的圆角 */
+            border-top-left-radius: 6px;
+            border-top-right-radius: 6px;
+            background-color: #cc3333;
+            /* 加上过渡 */
+            transition: all 0.5s;
+            /* 现在有个小问题 我们一起看看 ne
+          /* 就是这个问题 这个线条有点影响鼠标移入li这个效果 */
+            /* 这个属性就可以解决这个问题 就貌似这个元素你能看见 但是鼠标是点击不到了 现在鼠标放到线条也没事了 */
+            pointer-events: none;
+        }
+
+        .navbar .nav ul .underline::before{
+            content: "";
+            /* 利用::before伪元素设置三角 */
+            position: absolute;
+            top: -10px;
+            /* calc方法自动计算数值 让盒子居中 */
+            left: calc(50% - 9px);
+            width: 18px;
+            height: 10px;
+            /* inherit可以继承父元素的属性值 */
+            background-color: inherit;
+            /* 各位小伙伴可能对着属性比较陌生 我简单说一下这句话如何生成了三角形 这个属性可以绘制图案 polygon这个属性只需要提供最少三个点
+                 就可以将三个点连接到一起 然后绘制一个图案  两个点的坐标位置(x,y) 0 100% 这个点就是说在x轴上为0px 在y轴是100%
+                 就是盒子的高度 x轴的方向是向右 y轴的方向是向下 那么我们设置了三个点 然后将三个点连起来刚好绘制出一个三角形 不明白的小伙伴可以在纸上画一下 画出来就理解了 */
+            clip-path: polygon(0 100%,50% 0,100% 100%);
+        }
+
+        .navbar .nav ul > li:nth-child(2):hover ~ .underline{
+            left: 240px;
+            background-color: #ff9933;
+        }
+
+        .navbar .nav ul > li:nth-child(3):hover ~ .underline{
+            left: 480px;
+            background-color: #339933;
+        }
+
+        .navbar .nav ul > li:nth-child(4):hover ~ .underline{
+            left: 720px;
+            background-color: #0099cc;
+        }
+
+        .navbar .nav ul > li:nth-child(5):hover ~ .underline{
+            left: 960px;
+            background-color: #9966cc;
+        }
+
+
+
+    </style>
+    <style>
+    </style>
+
+</head>
+<body>
+
+<div class="navbar">
+    <div class="nav">
+        <ul>
+            <li>
+                <a href="#">SUSTC</a>
+            </li>
+            <li>
+                <a href="#">Staff</a>
+                <ol>
+                    <li><a href="#" onclick="FindSellMostMoney()" id="SellMostMoney">销售额最多的员工</a></li>
+                    <li><a href="#" onclick="FindSellMostProduct()" id="SellMostProduct">销售数量最多的员工</a></li>
+                    <li><a href="#" onclick="GotoDeleteStaff()" id="GotoDeleteStaff" >开除员工</a></li>
+                    <li><a href="#" onclick="GotoChangeStaff()" id="GotoChangeStaff">岗位调动</a></li>
+                    <li><a href="#" onclick="changepassword()" id="changepassword">修改密码</a></li>
+                </ol>
+            </li>
+            <li>
+                <a href="#">Model</a>
+                <ol>
+                    <li><a href="#" id="BestSellProduct" onclick="BestSellProduct()">最畅销的产品</a></li>
+                    <li><a href="#" id="FindStockInRecord" onclick="GotoFindStockRecord()">仓库库存</a></li>
+                    <li><a href="#" id="DelistedProducts" onclick="GotoDelistedProducts()">下架产品</a></li>
+                    <li><a href="#" id="ProductLaunch" onclick="ProductLaunch()">新产品上市</a></li>
+                    <li><a href="#" id="StockModel" onclick="StockModel()">产品进货</a></li>
+                </ol>
+            </li>
+            <li>
+                <a href="#">Order</a>
+                <ol>
+                    <li><a href="#" id="placeOrder" onclick="placeOrder()">生成订单</a></li>
+                    <li><a href="#" id="submitOrder" onclick="GotoSelectOrder()">查询订单</a></li>
+                    <li><a href="#">尚未开发</a></li>
+                    <li><a href="#">尚未开发</a></li>
+                    <li><a href="#">尚未开发</a></li>
+                </ol>
+            </li>
+            <li>
+                <a href="#">Enterprise</a>
+                <ol>
+                    <li><a href="#" id="FinancialReport" onclick="FinancialReport()">资金流水</a></li>
+                    <li><a href="#" onclick="GotoSelectArea()" id="GotoSelectArea">公司利润</a></li>
+                    <li><a href="https://baike.baidu.com/item/%E5%8D%97%E6%96%B9%E7%A7%91%E6%8A%80%E5%A4%A7%E5%AD%A6/8617297?fromtitle=SUSTC&fromid=6078964&fr=aladdin">公司简介</a></li>
+                    <li><a href="https://faculty.sustech.edu.cn/mayx/">加入我们</a></li>
+                    <li><a href="#">尚未开发</a></li>
+                </ol>
+            </li>
+            <li>
+                <a href="#">PersonalAffairs</a>
+                <ol>
+                    <li><a href="https://www.bilibili.com/">看番</a></li>
+                    <li><a href="https://leetcode.cn/">学习</a></li>
+                    <li><a href="https://paveldogreat.github.io/WebGL-Fluid-Simulation/">摸鱼</a></li>
+                    <li><a href="https://www.4399.com/">游戏</a></li>
+                </ol>
+            </li>
+
+            <li>
+                <a href="#">Basic</a>
+                <ol>
+                    <li><a href="#" onclick="TestIGetAllStaffCount()" id="TestIGetAllStaffCount">员工统计</a></li>
+                    <li><a href="#" onclick="TestNGetAvgStockByCenter()" id="TestNGetAvgStockByCenter">地区平均库存</a></li>
+                    <li><a href="#" onclick="TestOGetProductByNumber()" id="TestOGetProductByNumber" >获取产品</a></li>
+                    <li><a href="#" onclick="TestPGetContractInfo()" id="TestPGetContractInfo">获取订单信息</a></li>
+                    <li><a href="#" >尚未开发</a></li>
+                </ol>
+            </li>
+
+
+             <!--<li class="underline"></li>-->
+        </ul>
+    </div>
+</div>
+</br>
+</br>
+</br>
+</br>
+<h1 align="center">Welcome to SUSTC operation system!!!</h1>
+</br>
+</br>
+
+
+
+</body>
+
+<script>
+    //1
+    function FindSellMostMoney() {
+        $.ajax({
+            url: "/Select/FindSellMostMoney",   //取select页面查找看其是否有这个权限
+            success(Data) {
+                if (Data.code == 500) {
+                    location.href = "/Decision/doSelectSellMostMoney";
+                } else {
+                    alert("操作不成功，网页出现问题");
+                }
+            },
+
+            error() {
+                alert("客户端出现异常");
+            }
+        });
+    }
+   //2
+    function FindSellMostProduct() {
+        $.ajax({
+            url: "/Select/FindSellMostProduct",   //取select页面查找看其是否有这个权限
+            success(Data) {
+                if (Data.code == 500) {
+                    location.href = "/Decision/doFindSellMostProduct";
+
+                } else {
+                    alert("操作不成功，网页出现问题");
+                }
+            },
+
+            error() {
+                alert("客户端出现异常");
+            }
+        });
+
+
+    }
+   //3
+    function BestSellProduct() {
+        $.ajax({
+            url: "/Select/FindBestSellProduct",   //取select页面查找看其是否有这个权限
+            success(Data) {
+                if (Data.code == 500) {
+                    location.href = "/Decision/doBestSellProduct";
+                    /*  document.getElementById("SMM").innerHTML = `销售额最大的员工是：${Max_sales.getName()} ; 销售业绩是：${Max_sales.getSales()}`*/
+                } else {
+                    alert("操作不成功，网页出现问题");
+                }
+            },
+
+            error() {
+                alert("客户端出现异常");
+            }
+        });
+
+    }
+    //4
+    function FinancialReport(){
+        $.ajax({
+            url: "/Select/FinancialReport",   //取select页面查找看其是否有这个权限
+            success(Data) {
+                if (Data.code == 500) {
+                    location.href = "/Decision/FinancialReport";
+                } else {
+                    alert(Data.message);
+                }
+            },
+            error() {
+                alert("客户端出现异常");
+            }
+        });
+
+    }
+    //前往选择界面 5
+    function GotoSelectArea(){
+        $.ajax({
+            url: "/Select/gotoProfit",   //取select页面查找看其是否有这个权限
+            success(Data) {
+                if (Data.code == 500) {
+                    location.href = "/Decision/doGotoProfit";
+                } else {
+                    alert(Data.message);
+                }
+            },
+            error() {
+                alert("客户端出现异常");
+            }
+        });
+
+    }
+    //前往订单选择界面 6
+    function GotoSelectOrder(){
+        $.ajax({
+            url: "/Select/gotoOrder",   //取select页面查找看其是否有这个权限
+            success(Data) {
+                if (Data.code == 500) {
+                    location.href = "/Decision/doGotoOrder";
+                } else {
+                    alert(Data.message);
+                }
+            },
+            error() {
+                alert("客户端出现异常");
+            }
+        });
+
+    }
+    //前往仓库选择界面 7
+    function GotoFindStockRecord(){
+        $.ajax({
+            url: "/Select/gotoFindStockRecord",   //取select页面查找看其是否有这个权限
+            success(Data) {
+                if (Data.code == 500) {
+                    location.href = "/Decision/dogotoFindStockRecord";
+                } else {
+                    alert(Data.message);
+                }
+            },
+            error() {
+                alert("客户端出现异常");
+            }
+        });
+
+    }
+    //下架产品
+    function GotoDelistedProducts(){
+        $.ajax({
+            url: "/Delete/GotoDelistedProducts",   //取select页面查找看其是否有这个权限
+            success(Data) {
+                if (Data.code == 500) {
+                    location.href = "/Decision/doGotoDelistedProducts";
+                } else {
+                    alert(Data.message);
+                }
+            },
+            error() {
+                alert("客户端出现异常");
+            }
+        });
+
+
+    }
+
+    //新产品上架
+    function ProductLaunch(){
+        $.ajax({
+            url: "/Add/GotoAddProducts",   //取select页面查找看其是否有这个权限
+            success(Data) {
+                if (Data.code == 500) {
+                    location.href = "/Decision/doGotoAddProducts";
+                } else {
+                    alert(Data.message);
+                }
+            },
+            error() {
+                alert("客户端出现异常");
+            }
+        });
+
+
+
+
+    }
+
+    //开除员工
+    function GotoDeleteStaff(){
+        $.ajax({
+            url: "/Delete/GotoDeleteStaff",   //取select页面查找看其是否有这个权限
+            success(Data) {
+                if (Data.code == 500) {
+                    location.href = "/Decision/doGotoDeleteStaff";
+                } else {
+                    alert(Data.message);
+                }
+            },
+            error() {
+                alert("客户端出现异常");
+            }
+        });
+
+
+
+    }
+
+    //岗位变动
+    function GotoChangeStaff(){
+        $.ajax({
+            url: "/Update/GotoChangeStaff",   //取select页面查找看其是否有这个权限
+            success(Data) {
+                if (Data.code == 500) {
+                    location.href = "/Decision/doGotoChangeStaff";
+                } else {
+                    alert(Data.message);
+                }
+            },
+            error() {
+                alert("客户端出现异常");
+            }
+        });
+
+    }
+
+    //修改密码
+    function changepassword(){
+        $.ajax({
+            url: "/Update/GotoUpdatePawssword",   //取select页面查找看其是否有这个权限
+            success(Data) {
+                if (Data.code == 500) {
+                    location.href = "/Decision/doGotoUpdatePawssword";
+                } else {
+                    alert(Data.message);
+                }
+            },
+            error() {
+                alert("客户端出现异常");
+            }
+        });
+
+    }
+
+    //新产品入库
+    function StockModel(){
+        $.ajax({
+            url: "/Add/GotoAddStock",   //取select页面查找看其是否有这个权限
+            success(Data) {
+                if (Data.code == 500) {
+                    location.href = "/Decision/doGotoAddStock";
+                } else {
+                    alert(Data.message);
+                }
+            },
+            error() {
+                alert("客户端出现异常");
+            }
+        });
+
+    }
+
+    //生成订单
+    function placeOrder(){
+        $.ajax({
+            url: "/Add/GotoGenerateOrder",   //取select页面查找看其是否有这个权限
+            success(Data) {
+                if (Data.code == 500) {
+                    location.href = "/Decision/doGotoGenerateOrder";
+                } else {
+                    alert(Data.message);
+                }
+            },
+            error() {
+                alert("客户端出现异常");
+            }
+        });
+
+    }
+
+    //TestI
+    function TestIGetAllStaffCount(){
+        $.ajax({
+            url: "/Basic/GotoTestI",   //取select页面查找看其是否有这个权限
+            success(Data) {
+                if (Data.code == 500) {
+                    location.href = "/Decision/doGotoTestI";
+                } else {
+                    alert(Data.message);
+                }
+            },
+            error() {
+                alert("客户端出现异常");
+            }
+        });
+
+    }
+
+    //TestN
+    function TestNGetAvgStockByCenter(){
+        $.ajax({
+            url: "/Basic/GotoTestN",   //取select页面查找看其是否有这个权限
+            success(Data) {
+                if (Data.code == 500) {
+                    location.href = "/Decision/GotoTestN";
+                } else {
+                    alert(Data.message);
+                }
+            },
+            error() {
+                alert("客户端出现异常");
+            }
+        });
+
+
+    }
+
+    //TestO
+    function TestOGetProductByNumber(){
+        $.ajax({
+            url: "/Basic/GotoTestO",   //取select页面查找看其是否有这个权限
+            success(Data) {
+                if (Data.code == 500) {
+                    location.href = "/Decision/doGotoTestO";
+                } else {
+                    alert(Data.message);
+                }
+            },
+            error() {
+                alert("客户端出现异常");
+            }
+        });
+    }
+
+   function TestPGetContractInfo(){
+       $.ajax({
+           url: "/Basic/GotoTestP",   //取select页面查找看其是否有这个权限
+           success(Data) {
+               if (Data.code == 500) {
+                   location.href = "/Decision/doGotoTestP";
+               } else {
+                   alert(Data.message);
+               }
+           },
+           error() {
+               alert("客户端出现异常");
+           }
+       });
+
+   }
+
+
+
+
+
+</script>
+
+
+
+
+</html>

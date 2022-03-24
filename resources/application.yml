@@ -1,0 +1,62 @@
+#spring.datasource.url=jdbc:postgresql://localhost:5432/postgres
+#spring.datasource.username=postgres
+#spring.datasource.password=xujian123
+#spring.datasource.driver-class-name=org.postgresql.Driver
+#mybatis.mapper-locations=classpath:mapper/*.xml
+
+spring:
+  thymeleaf:
+
+    cache: false
+
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: xujian123
+    hikari:
+
+      pool-name: DataHikari
+
+      minimum-idle: 5
+
+      idle-timeout: 1800000
+
+      maximum-pool-size: 50000
+
+      auto-commit: true
+
+      max-lifetime: 1800000
+
+      connection-timeout: 30000000
+
+      connection-test-query: SELECT 1
+
+
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    database: 0
+    timeout: 10000ms
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: 10000ms
+        max-idle: 200
+        min-idle: 5
+
+
+
+mybatis-plus:
+
+  mapper-locations: classpath:mapper/*.xml
+
+  type-aliases-package: com.proj.sustc.entity
+
+
+
+logging:
+  level:
+    com.proj.sustc.entity: debug
+

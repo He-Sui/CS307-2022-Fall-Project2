@@ -2,8 +2,8 @@ package com.proj.sustc.service;
 
 import com.proj.sustc.entity.Stock;
 import com.proj.sustc.entity.StockInRecord;
+import com.proj.sustc.entity.TestO;
 import com.proj.sustc.vo.RespBean;
-import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,7 +32,7 @@ public interface IStockService {
      *
      * @return supply center and average
      */
-    String getAvgStockByCenter();
+    List<Map<String, Object>> getAvgStockByCenter();
 
     /**
      * Find a product according to the product number and return the current inventory capacity of each
@@ -46,5 +46,9 @@ public interface IStockService {
     RespBean doSelectModel(HttpServletRequest request, HttpServletResponse response, String stockModel, String SupplyCenter);
 
     List<Stock> getStockListByCookie(HttpServletRequest request, HttpServletResponse response, String stockModel);
+
+    RespBean DeleteModel(HttpServletRequest request, HttpServletResponse response, String model);
+
+    List<TestO>  getTestObyCookie(HttpServletResponse response,HttpServletRequest request,String TestO);
 
 }

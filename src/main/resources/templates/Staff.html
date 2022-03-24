@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff</title>
+
+</head>
+<body>
+
+<table table align="center" border="1">
+    <thead>
+    <tr>
+        <td>id</td>
+        <td>number</td>
+        <td>name</td>
+        <td>phone number</td>
+        <td>gender</td>
+        <td>age</td>
+        <td>type</td>
+        <td>supply center</td>
+    </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<input type="hidden" id="list" name="list" th:value="${Staff}">
+</body>
+
+<script>
+    var max=$("#list").val();
+    console.log(max);
+    var obj=JSON.parse(max);
+
+    for(var i=0;i<obj.length;i++) {
+        var tbody = document.querySelector('tbody');
+        var tr = document.createElement('tr');
+        tbody.appendChild(tr);
+        var td1 = document.createElement('td');
+        tr.appendChild(td1);
+        td1.innerHTML = obj[i].id;
+
+        var td2 = document.createElement('td');
+        tr.appendChild(td2);
+        td2.innerHTML = obj[i].number;
+
+        var td3 = document.createElement('td');
+        tr.appendChild(td3);
+        td3.innerHTML = obj[i].name;
+
+        var td4 = document.createElement('td');
+        tr.appendChild(td4);
+        td4.innerHTML = obj[i].phoneNumber;
+
+        var td5 = document.createElement('td');
+        tr.appendChild(td5);
+        td5.innerHTML = obj[i].gender;
+
+        var td6 = document.createElement('td');
+        tr.appendChild(td6);
+        td6.innerHTML = obj[i].age;
+
+        var td7 = document.createElement('td');
+        tr.appendChild(td7);
+        td7.innerHTML = obj[i].type;
+
+        var td8 = document.createElement('td');
+        tr.appendChild(td8);
+        td8.innerHTML = obj[i].supplyCenter;
+
+    }
+
+
+
+</script>
+
+</html>

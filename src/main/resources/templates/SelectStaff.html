@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SearchStaff</title>
+    <style>
+        body{
+            background-image: url("https://raw.githubusercontent.com/zeroojs/landing-ux/cbf6461ef05f9d1c00b70e190fdcc4bd858a7a48/img/register.svg");
+        }
+    </style>
+</head>
+<body>
+
+StaffNumber<input type="text" id="StaffNumber" name="StaffNumber">
+StaffName<input type="text" id="StaffName" name="StaffName">
+
+<button th:type="button" id="submitStaff" onclick="SelectStaff()">查询员工</button>
+
+</body>
+
+<script>
+    function SelectStaff(){
+        var number=$("#StaffNumber").val();
+        var name=$("#StaffName").val();
+
+        $.ajax({
+                url: "/Select/SelectStaff",
+                type: "POST",
+                data: {
+                    number: number,
+                    name: name
+                },
+                success: function (Data) {
+                    if(Data.code == 500){
+                        <!-- 跳转后端处理-->
+                        window.location.href="/Decision/doSelectStaff";
+                    }
+                    else {
+                        window.alert(Data.message);
+                    }
+                }
+                ,error :
+                    function () {
+                        window.alert("服务器出现问题");
+                    }
+            }
+        );
+
+
+
+
+    }
+
+
+
+</script>
+
+
+</html>

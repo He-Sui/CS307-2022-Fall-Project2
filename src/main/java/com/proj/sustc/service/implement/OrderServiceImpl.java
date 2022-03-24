@@ -165,13 +165,8 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     @Override
-    public String getFavoriteProductModel() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(String.format("%-50s%-10s\n", "product model", "sales volume"));
-        List<Map<String, Object>> list = orderMapper.getFavoriteProductModel();
-        for (Map<String, Object> res : list)
-            sb.append(String.format("%-50s%-10s\n", res.get("product model"), res.get("sales volume")));
-        return sb.toString();
+    public List<Map<String, Object>> getFavoriteProductModel() {
+       return orderMapper.getFavoriteProductModel();
     }
 
     @Override
@@ -509,7 +504,7 @@ public class OrderServiceImpl implements IOrderService {
 
         if (area.equals("Company")) {
             //开始去权限表查找其是否有这个权限
-            Role_Permission role_permission = role_permissionMapper.SelectByRoleIdAndPermission(role_login_in.getRole_id(), 5);
+            Role_Permission role_permission = role_permissionMapper.SelectByRoleIdAndPermission(role_login_in.getRole_id(), 6);
             if (role_permission == null) {
                 return RespBean.operation_error(RespBeanEnum.OPERATION_ERROR);
             } else {
@@ -535,7 +530,7 @@ public class OrderServiceImpl implements IOrderService {
                 return RespBean.operation_success(RespBeanEnum.OPERATION_SUCCESS);
             }
         } else {
-            Role_Permission role_permission = role_permissionMapper.SelectByRoleIdAndPermission(role_login_in.getRole_id(), 6);
+            Role_Permission role_permission = role_permissionMapper.SelectByRoleIdAndPermission(role_login_in.getRole_id(), 7);
             if (role_permission == null) {
                 return RespBean.operation_error(RespBeanEnum.OPERATION_ERROR);
             } else {
@@ -597,9 +592,9 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     @Override
-    public RespBean doSelectOrder(HttpServletResponse response, HttpServletRequest request, String model, String area) {
+    public RespBean doSelectOrder(HttpServletResponse response, HttpServletRequest request, String model, String contract,String salesman) {
         //开始在orderMapper包下写相应的查询方法
-        List<Orders> ordersList = orderMapper.SelectOrderByModelAndArea(area, model);
+        List<Orders> ordersList = orderMapper.SelectOrderByThreeAttributes(model, contract,salesman);
         //开始用cookie存
         String orders = UUIDUtil.uuid();
         redisTemplate.opsForValue().set(orders, ordersList);
@@ -653,6 +648,27 @@ public class OrderServiceImpl implements IOrderService {
         List<Orders> ordersList = (List<Orders>) redisTemplate.opsForValue().get(orders);
         return ordersList;
     }
+    @Override
+   public  TestP1 getTestP1ByCookie(HttpServletResponse response,HttpServletRequest request,String p1){
+        if(p1==null){
+            return null;
+        }
+       TestP1 testP1=(TestP1) redisTemplate.opsForValue().get(p1);
+        return testP1;
+
+    }
+
+    @Override
+    public List<TestP2> getTestP2ByCookie(HttpServletResponse response,HttpServletRequest request,String p2){
+        if(p2==null){
+            return null;
+        }
+        List<TestP2> testP2=(List<TestP2>) redisTemplate.opsForValue().get(p2);
+        return testP2;
+
+    }
+
+
 
     //计算各个分部以及总公司的利润值;
     public static Profit findProfit(String area, OrderMapper orderMapper, ModelMapper modelMapper, StaffMapper staffMapper, StockMapper stockMapper) {

@@ -198,32 +198,6 @@ public class MainTests {
         }
     }
 
-//    @Test
-//    public void TestFPlaceOrder() {
-//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//        try {
-//            BufferedReader bf = new BufferedReader(new FileReader("src/test/data/task2_test_data_publish.csv"));
-//            bf.readLine();
-//            String line;
-//            String[] info;
-//            while ((line = bf.readLine()) != null) {
-//                info = line.split(",");
-//                try {
-//                    if (info[7].equals(""))
-//                        orderService.placeOrder(info[0], info[1], info[2], Integer.valueOf(info[3]), info[4], simpleDateFormat.parse(info[5]), simpleDateFormat.parse(info[6]), null, info[8], info[9]);
-//                    else {
-//                        orderService.placeOrder(info[0], info[1], info[2], Integer.valueOf(info[3]), info[4], simpleDateFormat.parse(info[5]), simpleDateFormat.parse(info[6]), simpleDateFormat.parse(info[7]), info[8], info[9]);
-//                    }
-//                } catch (ServiceException e) {
-//                    System.err.println(e.getMessage());
-//                }
-//
-//            }
-//        } catch (Exception e) {
-//            System.err.println(e.getMessage());
-//        }
-//    }
-
     @Test
     public void TestFPlaceOrder() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -326,12 +300,22 @@ public class MainTests {
 
     @Test
     public void TestMGetFavoriteProductModel() {
-        System.out.println(orderService.getFavoriteProductModel());
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("%-50s%-10s\n", "product model", "sales volume"));
+        List<Map<String, Object>> list = orderService.getFavoriteProductModel();
+        for (Map<String, Object> res : list)
+            sb.append(String.format("%-50s%-10s\n", res.get("product model"), res.get("sales volume")));
+        System.out.println(sb.toString());
     }
 
     @Test
     public void TestNGetAvgStockByCenter() {
-        System.out.println(stockService.getAvgStockByCenter());
+        List<Map<String, Object>> list = stockService.getAvgStockByCenter();
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("%-50s%-10s\n", "supply center", "average"));
+        for (Map<String, Object> res : list)
+            sb.append(String.format("%-50s%-10s\n", res.get("supply_center"), res.get("average")));
+        System.out.println(sb.toString());
     }
 
     @Test

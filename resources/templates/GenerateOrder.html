@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GenerateOrder</title>
+    <style>
+        body{
+            background-image: url("https://raw.githubusercontent.com/zeroojs/landing-ux/cbf6461ef05f9d1c00b70e190fdcc4bd858a7a48/img/register.svg");
+        }
+    </style>
+</head>
+<body>
+
+
+contractNumber<input type="text" id="contractNumber" name="contractNumber">
+enterpriseName<input type="text" id="enterpriseName" name="enterpriseName">
+productModel<input type="text" id="productModel" name="productModel">
+quantity<input type="text" id="quantity" name="quantity">
+</br>
+contractManager<input type="text" id="contractManager" name="contractManager">
+salesmanNumber<input type="text" id="salesmanNumber" name="salesmanNumber">
+
+contractDate<input type="date" id="contractDate">
+estimatedDate<input type="date" id="estimatedDate">
+</br>
+lodgementDate<input type="date" id="lodgementDate">
+
+<button th:type="button" id="Orderbtn" onclick="Orderbtn()">确定下单</button>
+
+</body>
+<script>
+
+function Orderbtn(){
+
+    var contractNumber=document.getElementById("contractNumber").value;
+    var enterpriseName=document.getElementById("enterpriseName").value;
+    var productModel=document.getElementById("productModel").value;
+    var quantity=document.getElementById("quantity").value;
+    var contractManager=document.getElementById("contractManager").value;
+    var salesmanNumber=document.getElementById("salesmanNumber").value;
+
+    var contractDate=document.getElementById("contractDate").value;
+    var estimatedDate=document.getElementById("estimatedDate").value;
+    var lodgementDate=document.getElementById("lodgementDate").value;
+
+
+
+    $.ajax({
+        url: "/Add/AddOrder", //取select页面查找看其是否有这个权限
+        type: "POST",
+        data: {
+            contractNumber: contractNumber,
+            enterpriseName: enterpriseName ,
+            productModel:productModel,
+            quantity:quantity,
+            contractManager:contractManager,
+            salesmanNumber:salesmanNumber,
+
+            contractDate:contractDate,
+            estimatedDate:estimatedDate,
+            lodgementDate:lodgementDate,
+
+        },
+
+        success(Data) {
+            if (Data.code == 500) {
+                location.href = "/Decision/doSelectSellMostMoney";
+            } else {
+                alert("操作不成功，网页出现问题");
+            }
+        },
+
+        error() {
+            alert("客户端出现异常");
+        }
+    });
+
+
+
+
+
+}
+
+
+
+
+
+</script>
+
+
+
+
+
+</html>

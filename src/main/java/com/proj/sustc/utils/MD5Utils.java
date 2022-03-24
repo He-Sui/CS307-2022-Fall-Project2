@@ -3,7 +3,6 @@ package com.proj.sustc.utils;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Component;
 
-
 @Component
 public class MD5Utils {
 

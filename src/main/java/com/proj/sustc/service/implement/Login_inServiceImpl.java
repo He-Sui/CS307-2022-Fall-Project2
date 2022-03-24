@@ -38,8 +38,6 @@ public class Login_inServiceImpl implements ILogin_inService {
         String inputPass= loginVO.getPassword();
         Login_in login_in=login_inMapper.selectByUsername(username);
 
-
-
         if(login_in==null){
             return RespBean.login_error(RespBeanEnum.LOGIN_ERROR);
         }
@@ -58,6 +56,20 @@ public class Login_inServiceImpl implements ILogin_inService {
 
 
     }
+
+    @Override
+    public RespBean UpdatePassword(HttpServletRequest request, HttpServletResponse response, String password, String user,Login_in login_in){
+        String dbPassword=MD5Utils.secondPass(password,"1a2b3c4d");
+
+        System.out.println(dbPassword);
+        login_inMapper.UpdatePassword(dbPassword, login_in.getUsername());
+
+        return RespBean.operation_success();
+    }
+
+
+
+
     @Override
     public Login_in getLogin_inByCookie(HttpServletResponse response,HttpServletRequest request,String login_in_user){
         if(login_in_user==null){

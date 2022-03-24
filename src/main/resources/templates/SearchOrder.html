@@ -15,8 +15,9 @@
 </head>
 <body>
 <form>
-    <input type="text" id="model" name="model_number">model
-    <input type="text" id="area" name="area">area
+    model<input type="text" id="model" name="model_number">
+    contract<input type="text" id="contract" name="contract">
+    salesman<input type="text" id="salesman" name="salesman">
     <button th:type="button" id="submitOrder" onclick="SelectOrder()">查询订单</button>
 </form>
 </body>
@@ -24,13 +25,15 @@
 
     function SelectOrder() {
         var model=$("#model").val();
-        var area=$("#area").val();
+        var contract=$("#contract").val();
+        var  salesman=$("#salesman").val();
         $.ajax({
                 url: "/Select/SelectOrder",
                 type: "POST",
                 data: {
                     model: model,
-                    area: area
+                    contract: contract,
+                    salesman:salesman
                 },
                 success: function (Data) {
                     if(Data.code == 500){

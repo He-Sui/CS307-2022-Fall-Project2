@@ -1,6 +1,8 @@
 package com.proj.sustc.service;
 
 import com.proj.sustc.entity.Orders;
+import com.proj.sustc.entity.TestP1;
+import com.proj.sustc.entity.TestP2;
 import com.proj.sustc.object.ProductModelCount;
 import com.proj.sustc.object.Profit;
 import com.proj.sustc.object.StaffSell;
@@ -64,7 +66,7 @@ public interface IOrderService {
      * Find the models with the highest sold quantity, and the number of sales.
      * @return model_name and quantity
      */
-    String getFavoriteProductModel();
+    List<Map<String, Object>> getFavoriteProductModel();
 
     /**
      * Find a contract with a contract number and return the content of the contract.
@@ -100,7 +102,11 @@ public interface IOrderService {
 
     Object getProfitsqlByCookie(HttpServletResponse response, HttpServletRequest request, String profitStr);
 
-    RespBean doSelectOrder(HttpServletResponse response, HttpServletRequest request, String model, String area);
+    RespBean doSelectOrder(HttpServletResponse response, HttpServletRequest request, String model, String contract,String salesman);
 
     List<Orders> getListOrdersByCookie(HttpServletResponse response,HttpServletRequest request,String orders);
+
+    TestP1 getTestP1ByCookie(HttpServletResponse response,HttpServletRequest request,String p1);
+
+    List<TestP2> getTestP2ByCookie(HttpServletResponse response,HttpServletRequest request,String p2);
 }

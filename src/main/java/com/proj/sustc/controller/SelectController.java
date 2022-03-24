@@ -1,8 +1,7 @@
 package com.proj.sustc.controller;
 
 
-import com.proj.sustc.service.IOrderService;
-import com.proj.sustc.service.IStockService;
+import com.proj.sustc.service.*;
 import com.proj.sustc.vo.RespBean;
 import com.proj.sustc.vo.RespBeanEnum;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +24,9 @@ public class SelectController {
 
     @Autowired
     private IStockService iStockService;
+
+    @Autowired
+    private IStaffService iStaffService;
 
 
     @RequestMapping("/toSelect")
@@ -95,8 +97,9 @@ public class SelectController {
 
    @RequestMapping("/SelectOrder")
    @ResponseBody
-   public RespBean doSelectOrder(HttpServletResponse response, HttpServletRequest request, @RequestParam("model") String model, @RequestParam("area") String area){
-        return iOrderService.doSelectOrder(response,request,model,area);
+   public RespBean doSelectOrder(HttpServletResponse response, HttpServletRequest request, @RequestParam("model") String model, @RequestParam("contract") String contract,
+                           @RequestParam("salesman")String salesman    ){
+        return iOrderService.doSelectOrder(response,request,model,contract,salesman);
    }
 
    @RequestMapping("/SelectModel")
@@ -104,6 +107,19 @@ public class SelectController {
     public RespBean SelectModel(HttpServletResponse response,HttpServletRequest request,@RequestParam("StockModel")String StockModel,
                          @RequestParam("SupplyCenter") String SupplyCenter  ){
         return iStockService.doSelectModel(request,response,StockModel,SupplyCenter);
+   }
+
+    @RequestMapping("/GOtoSelectStaff")
+    @ResponseBody
+    public RespBean GOtoSelectStaff(){
+        return RespBean.operation_success();
+   }
+
+   @RequestMapping("/SelectStaff")
+   @ResponseBody
+   public RespBean SelectStaff(@RequestParam("number")String number,@RequestParam("name")String name,HttpServletRequest request,
+                          HttpServletResponse response ){
+        return iStaffService.SelectStaff(name,number,request,response);
    }
 
 

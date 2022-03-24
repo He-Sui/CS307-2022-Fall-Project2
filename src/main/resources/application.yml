@@ -6,13 +6,15 @@
 
 spring:
   thymeleaf:
+
     cache: false
+
 
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/sustc
-    username: postgres
-    password: xujian123
+    username: director
+    password: 123456
     hikari:
 
       pool-name: DataHikari
@@ -51,5 +53,3 @@ mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
 
   type-aliases-package: com.proj.sustc.entity
-
-

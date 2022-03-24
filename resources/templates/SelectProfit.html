@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search</title>
+
+    <style>
+        body{
+            background-image: url("https://raw.githubusercontent.com/zeroojs/landing-ux/cbf6461ef05f9d1c00b70e190fdcc4bd858a7a48/img/register.svg");
+        }
+    </style>
+
+</head>
+<body>
+<section id="Select">
+    <select size='1' name='ProfitInselect'  id="ProfitInformation">
+        <option value="Company" >Company</option>
+        <option value='America' >America</option>
+        <option value="Eastern China">Eastern China</option>
+        <option value="Asia">Asia</option>
+        <option value="Southern China">Southern China</option>
+        <option value="Northern China">Northern China</option>
+        <option value="Europe">Europe</option>
+        <option value="Southwestern China">Southwestern China</option>
+        <option value="Hong Kong, Macao and Taiwan regions of China">Hong Kong, Macao and Taiwan regions of China</option>
+    </select>
+    起始日期 <input type="date" id="start">
+    结束日期<input type="date" id="end">
+    <button th:type="button" id="Profit" onclick="Profit()">查看利润</button>
+</section>
+
+
+</body>
+<script>
+    function Profit(){
+        var area=document.getElementById("ProfitInformation").value;
+        /*  var start=new Date(document.getElementById("start"));
+          var end=new Date(document.getElementById("end"));*/
+        var start=document.getElementById("start").value;
+        var end=document.getElementById("end").value;
+
+        $.ajax({
+                url: "/Select/FindProfit",
+                type: "POST",
+                data: {
+                    Area: area ,
+                    start: start ,
+                    end: end
+                },success: function (Data) {
+                    if(Data.code == 500){
+                        <!-- 跳转后端处理-->
+                        window.location.href="/Decision/doFindProfit";
+                    }
+                    else {
+                        window.alert(Data.message);
+                    }
+                }
+                ,error :
+                    function () {
+                        window.alert("服务器出现问题");
+                    }
+
+            }
+
+        );
+    }
+</script>
+
+</html>

@@ -5,6 +5,7 @@ import com.proj.sustc.entity.Orders;
 import com.proj.sustc.entity.ProfitSql;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Date;
 import java.util.List;
@@ -121,5 +122,11 @@ public interface OrderMapper {
 
     List<ProfitSql> SelectProfit(@Param("start") Date start, @Param("end")Date end);
 
-    List<Orders> SelectOrderByModelAndArea(@Param("area")String area,@Param("model")String model);
+    List<Orders> SelectOrderByThreeAttributes(@Param("product_model")String product_model, @Param("contract_number")String contract_number
+    , @RequestParam("salesman_number")String salesman_number);
+
+    void UpdateOrderByDeleteSalesman(@Param("salesman_number") String number);
+
+
+   void UpdateContractByDeleteStaff(@Param("contract_manager") String number);
 }

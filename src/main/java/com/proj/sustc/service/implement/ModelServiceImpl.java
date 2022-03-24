@@ -3,15 +3,24 @@ package com.proj.sustc.service.implement;
 import com.proj.sustc.entity.Model;
 import com.proj.sustc.entity.Product;
 import com.proj.sustc.mapper.ModelMapper;
+import com.proj.sustc.mapper.ProductMapper;
 import com.proj.sustc.service.IModelService;
 import com.proj.sustc.service.exception.InsertException;
+import com.proj.sustc.vo.RespBean;
+import com.proj.sustc.vo.RespBeanEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.model.IModel;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @Service
 public class ModelServiceImpl implements IModelService {
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private ProductMapper productMapper;
 
     @Override
     public void insertModel(Model model) {
@@ -44,4 +53,22 @@ public class ModelServiceImpl implements IModelService {
     public Product selectProductByProductNumber(String number) {
         return modelMapper.selectProductByNumber(number);
     }
+
+    @Override
+    public RespBean AddModel(HttpServletRequest request, HttpServletResponse response, String model, String product, Integer price){
+        //首先要看商品存不存在，存在则失败
+        Model model1=modelMapper.selectModelByModelNumber(model);
+        Product product1=productMapper.SelectProductByNumber(product);
+        if(model1!=null||product1==null){
+            return RespBean.operation_error1(RespBeanEnum.OPERATION_ERROR1);
+        }
+        Model insertModel=new Model();
+        insertModel.setModel(model);
+        insertModel.setProductNumber(product);
+        insertModel.setUnitPrice(price);
+       // insertModel.setId(modelMapper.SelectMaxId()+1);
+        modelMapper.insertModel(insertModel);
+        return RespBean.operation_success(RespBeanEnum.OPERATION_SUCCESS);
+    }
+
 }

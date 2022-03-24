@@ -7,7 +7,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>操作界面</title>
-    <!-- <link rel="stylesheet" href="index.css">-->
     <style>
         *{
             /* 页面初始化,清楚元素的内外边距 */
@@ -177,9 +176,10 @@
                 <ol>
                     <li><a href="#" onclick="FindSellMostMoney()" id="SellMostMoney">销售额最多的员工</a></li>
                     <li><a href="#" onclick="FindSellMostProduct()" id="SellMostProduct">销售数量最多的员工</a></li>
-                    <li><a href="#">尚未开发</a></li>
-                    <li><a href="#">尚未开发</a></li>
-                    <li><a href="#">尚未开发</a></li>
+                    <li><a href="#" onclick="GotoDeleteStaff()" id="GotoDeleteStaff" >开除员工</a></li>
+                    <li><a href="#" onclick="GotoChangeStaff()" id="GotoChangeStaff">修改信息</a></li>
+                    <li><a href="#" onclick="changepassword()" id="changepassword">修改密码</a></li>
+                    <li><a href="#" onclick="GOtoSelectStaff()" id="GOtoSelectStaff">查找员工信息</a></li>
                 </ol>
             </li>
             <li>
@@ -188,14 +188,14 @@
                     <li><a href="#" id="BestSellProduct" onclick="BestSellProduct()">最畅销的产品</a></li>
                     <li><a href="#" id="FindStockInRecord" onclick="GotoFindStockRecord()">仓库库存</a></li>
                     <li><a href="#" id="DelistedProducts" onclick="GotoDelistedProducts()">下架产品</a></li>
-                    <li><a href="#">尚未开发</a></li>
-                    <li><a href="#">尚未开发</a></li>
+                    <li><a href="#" id="ProductLaunch" onclick="ProductLaunch()">新产品上市</a></li>
+                    <li><a href="#" id="StockModel" onclick="StockModel()">产品进货</a></li>
                 </ol>
             </li>
             <li>
                 <a href="#">Order</a>
                 <ol>
-                    <li><a href="https://space.bilibili.com/425416083?spm_id_from=333.337.0.0">个人地址</a></li>
+                    <li><a href="#" id="placeOrder" onclick="placeOrder()">生成订单</a></li>
                     <li><a href="#" id="submitOrder" onclick="GotoSelectOrder()">查询订单</a></li>
                     <li><a href="#">尚未开发</a></li>
                     <li><a href="#">尚未开发</a></li>
@@ -203,24 +203,37 @@
                 </ol>
             </li>
             <li>
-                <a href="#">Enterprise</a>
+                <a href="#">Company</a>
                 <ol>
                     <li><a href="#" id="FinancialReport" onclick="FinancialReport()">资金流水</a></li>
                     <li><a href="#" onclick="GotoSelectArea()" id="GotoSelectArea">公司利润</a></li>
-                    <li><a href="#">尚未开发</a></li>
-                    <li><a href="#">尚未开发</a></li>
+                    <li><a href="https://baike.baidu.com/item/%E5%8D%97%E6%96%B9%E7%A7%91%E6%8A%80%E5%A4%A7%E5%AD%A6/8617297?fromtitle=SUSTC&fromid=6078964&fr=aladdin">公司简介</a></li>
+                    <li><a href="https://faculty.sustech.edu.cn/mayx/">加入我们</a></li>
                     <li><a href="#">尚未开发</a></li>
                 </ol>
             </li>
             <li>
-                <a href="#">Center</a>
+                <a href="#">Personal Affairs</a>
                 <ol>
-                    <li><a href="https://space.bilibili.com/425416083?spm_id_from=333.337.0.0">个人地址</a></li>
-                    <li><a href="#">尚未开发</a></li>
-                    <li><a href="#">尚未开发</a></li>
-                    <li><a href="#">尚未开发</a></li>
+                    <li><a href="https://www.bilibili.com/">看番</a></li>
+                    <li><a href="https://leetcode.cn/">学习</a></li>
+                    <li><a href="https://paveldogreat.github.io/WebGL-Fluid-Simulation/">摸鱼</a></li>
+                    <li><a href="https://www.4399.com/">游戏</a></li>
                 </ol>
             </li>
+
+            <li>
+                <a href="#">Basic</a>
+                <ol>
+                    <li><a href="#" onclick="TestIGetAllStaffCount()" id="TestIGetAllStaffCount">员工统计</a></li>
+                    <li><a href="#" onclick="TestNGetAvgStockByCenter()" id="TestNGetAvgStockByCenter">地区平均库存</a></li>
+                    <li><a href="#" onclick="TestOGetProductByNumber()" id="TestOGetProductByNumber" >获取产品</a></li>
+                    <li><a href="#" onclick="TestPGetContractInfo()" id="TestPGetContractInfo">获取订单信息</a></li>
+                    <li><a href="#" onclick="GetFavoriteProduct()" id="GetFavoriteProduct()" >获取最喜欢的产品</a></li>
+                </ol>
+            </li>
+
+
              <!--<li class="underline"></li>-->
         </ul>
     </div>
@@ -238,6 +251,29 @@
 </body>
 
 <script>
+
+   document.write("\n" +
+       "<table  width=\"100%\" height=\"100%\" border=\"0\"   cellspacing=\"0\"   cellpadding=\"0\">\n" +
+       "    <tr>\n" +
+       "        <td   align=\"center\"   valign=\"middle\">\n" +
+       "            <table   width=\"50%\"   border=\"1\"   align=\"center\"   cellpadding=\"0\"   cellspacing=\"0\">\n" +
+       "               <thead><tr>\n" +
+       "                   <td>Contract Count</td>\n" +
+       "                   <td>Order Count</td>\n" +
+       "                   <td>Never Sold Model</td>\n" +
+       "               </tr>\n" +
+       "               </thead>\n" +
+       "                <tbody>\n" +
+       "                <td>[[${ContractCount}]]</td>\n" +
+       "                   <td>[[${OrderCount}]]</td>\n" +
+       "                   <td>[[${NeverProductCount}]]</td>\n" +
+       "                </tbody>\n" +
+       "            </table>\n" +
+       "        </td>\n" +
+       "    </tr>\n" +
+       "</table>")
+
+
     //1
     function FindSellMostMoney() {
         $.ajax({
@@ -380,6 +416,230 @@
 
 
     }
+
+    //新产品上架
+    function ProductLaunch(){
+        $.ajax({
+            url: "/Add/GotoAddProducts",   //取select页面查找看其是否有这个权限
+            success(Data) {
+                if (Data.code == 500) {
+                    location.href = "/Decision/doGotoAddProducts";
+                } else {
+                    alert(Data.message);
+                }
+            },
+            error() {
+                alert("客户端出现异常");
+            }
+        });
+
+
+
+
+    }
+
+    //开除员工
+    function GotoDeleteStaff(){
+        $.ajax({
+            url: "/Delete/GotoDeleteStaff",   //取select页面查找看其是否有这个权限
+            success(Data) {
+                if (Data.code == 500) {
+                    location.href = "/Decision/doGotoDeleteStaff";
+                } else {
+                    alert(Data.message);
+                }
+            },
+            error() {
+                alert("客户端出现异常");
+            }
+        });
+
+
+
+    }
+
+    //岗位变动
+    function GotoChangeStaff(){
+        $.ajax({
+            url: "/Update/GotoChangeStaff",   //取select页面查找看其是否有这个权限
+            success(Data) {
+                if (Data.code == 500) {
+                    location.href = "/Decision/doGotoChangeStaff";
+                } else {
+                    alert(Data.message);
+                }
+            },
+            error() {
+                alert("客户端出现异常");
+            }
+        });
+
+    }
+
+    //修改密码
+    function changepassword(){
+        $.ajax({
+            url: "/Update/GotoUpdatePawssword",   //取select页面查找看其是否有这个权限
+            success(Data) {
+                if (Data.code == 500) {
+                    location.href = "/Decision/doGotoUpdatePawssword";
+                } else {
+                    alert(Data.message);
+                }
+            },
+            error() {
+                alert("客户端出现异常");
+            }
+        });
+
+    }
+
+    //新产品入库
+    function StockModel(){
+        $.ajax({
+            url: "/Add/GotoAddStock",   //取select页面查找看其是否有这个权限
+            success(Data) {
+                if (Data.code == 500) {
+                    location.href = "/Decision/doGotoAddStock";
+                } else {
+                    alert(Data.message);
+                }
+            },
+            error() {
+                alert("客户端出现异常");
+            }
+        });
+
+    }
+
+    //生成订单
+    function placeOrder(){
+        $.ajax({
+            url: "/Add/GotoGenerateOrder",   //取select页面查找看其是否有这个权限
+            success(Data) {
+                if (Data.code == 500) {
+                    location.href = "/Decision/doGotoGenerateOrder";
+                } else {
+                    alert(Data.message);
+                }
+            },
+            error() {
+                alert("客户端出现异常");
+            }
+        });
+
+    }
+
+    //TestI
+    function TestIGetAllStaffCount(){
+        $.ajax({
+            url: "/Basic/GotoTestI",   //取select页面查找看其是否有这个权限
+            success(Data) {
+                if (Data.code == 500) {
+                    location.href = "/Decision/doGotoTestI";
+                } else {
+                    alert(Data.message);
+                }
+            },
+            error() {
+                alert("客户端出现异常");
+            }
+        });
+
+    }
+
+    //TestN
+    function TestNGetAvgStockByCenter(){
+        $.ajax({
+            url: "/Basic/GotoTestN",   //取select页面查找看其是否有这个权限
+            success(Data) {
+                if (Data.code == 500) {
+                    location.href = "/Decision/GotoTestN";
+                } else {
+                    alert(Data.message);
+                }
+            },
+            error() {
+                alert("客户端出现异常");
+            }
+        });
+
+
+    }
+
+    //TestO
+    function TestOGetProductByNumber(){
+        $.ajax({
+            url: "/Basic/GotoTestO",   //取select页面查找看其是否有这个权限
+            success(Data) {
+                if (Data.code == 500) {
+                    location.href = "/Decision/doGotoTestO";
+                } else {
+                    alert(Data.message);
+                }
+            },
+            error() {
+                alert("客户端出现异常");
+            }
+        });
+    }
+
+   function TestPGetContractInfo(){
+       $.ajax({
+           url: "/Basic/GotoTestP",   //取select页面查找看其是否有这个权限
+           success(Data) {
+               if (Data.code == 500) {
+                   location.href = "/Decision/doGotoTestP";
+               } else {
+                   alert(Data.message);
+               }
+           },
+           error() {
+               alert("客户端出现异常");
+           }
+       });
+
+   }
+
+//获取最喜欢的产品
+  function GetFavoriteProduct(){
+      $.ajax({
+          url: "/Basic/GotoGetFavoriteProduct",   //取select页面查找看其是否有这个权限
+          success(Data) {
+              if (Data.code == 500) {
+                  location.href = "/Decision/doGotoGetFavoriteProduct";
+              } else {
+                  alert(Data.message);
+              }
+          },
+          error() {
+              alert("客户端出现异常");
+          }
+      });
+
+
+
+
+  }
+
+  function GOtoSelectStaff(){
+      $.ajax({
+          url: "/Select/GOtoSelectStaff",   //取select页面查找看其是否有这个权限
+          success(Data) {
+              if (Data.code == 500) {
+                  location.href = "/Decision/doGOtoSelectStaff";
+              } else {
+                  alert(Data.message);
+              }
+          },
+          error() {
+              alert("客户端出现异常");
+          }
+      });
+
+
+
+  }
 
 
 </script>

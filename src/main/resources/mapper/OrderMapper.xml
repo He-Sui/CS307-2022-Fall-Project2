@@ -34,7 +34,7 @@
     </select>
     
     <select id="selectOrders" resultMap="OrdersEntityMap">
-        SELECT * FROM orders WHERE contract_number = #{contractNumber} AND product_model = #{productModel} AND salesman_number = #{salesmanNumber} FOR UPDATE
+        SELECT * FROM orders WHERE contract_number = #{contractNumber} AND product_model = #{productModel} AND salesman_number = #{salesmanNumber}
     </select>
 
     <delete id="deleteOrder">
@@ -96,7 +96,7 @@
     </update>
     
     <update id="updateContractType">
-        UPDATE contract SET contract_type = CASE WHEN end_time >= current_date THEN 'In Progress' ELSE 'Finished' END FROM(
+        UPDATE contract SET contract_type = CASE WHEN end_time > current_date THEN 'In Progress' ELSE 'Finished' END FROM(
         SELECT contract_number, MAX(lodgement_date) AS end_time FROM orders o JOIN contract c ON o.contract_number = c.number GROUP BY contract_number)sub WHERE sub.contract_number = contract.number;
     </update>
 
@@ -104,10 +104,19 @@
         select * from orders
     </select>
 
-    <select id="SelectOrderByModelAndArea" resultMap="OrdersEntityMap">
+    <select id="SelectOrderByThreeAttributes" resultMap="OrdersEntityMap">
 
-        select o.id,o.product_model,o.contract_number,o.salesman_number,o.quantity,o.estimated_delivery_date,o.lodgement_date
-        from orders o join staff s on o.salesman_number=s.number and s.supply_center like concat('%',#{area},'%') and o.product_model like concat('%',#{model},'%')
+        select * from orders where product_model like concat('',#{product_model},'%') and contract_number like concat('',#{contract_number},'%') and
+            salesman_number like concat('',#{salesman_number},'%')
 
     </select>
+
+    <update id="UpdateOrderByDeleteSalesman">
+        update orders set salesman_number=null where salesman_number=#{salesman_number}
+    </update>
+
+    <update id="UpdateContractByDeleteStaff">
+        update contract set contract_manager=null where contract_manager=#{contract_manager}
+    </update>
+
 </mapper>

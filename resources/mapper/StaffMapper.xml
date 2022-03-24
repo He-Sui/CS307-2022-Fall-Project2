@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.proj.sustc.mapper.StaffMapper">
+
+    <resultMap id="StaffEntityMap" type="com.proj.sustc.entity.Staff">
+        <id column="id" property="id"></id>
+        <result column="number" property="number"></result>
+        <result column="name" property="name"></result>
+        <result column="phone_number" property="phoneNumber"></result>
+        <result column="gender" property="gender"></result>
+        <result column="age" property="age"></result>
+        <result column="type" property="type"></result>
+        <result column="supply_center" property="supplyCenter"></result>
+    </resultMap>
+    <select id="selectByNumber" resultMap="StaffEntityMap">
+        SELECT * FROM staff WHERE number = #{number}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO staff (number, name, phone_number, gender, age, type, supply_center) values (#{number}, #{name}, #{phoneNumber}, #{gender}, #{age}, #{type}, #{supplyCenter})
+    </insert>
+    
+    <resultMap id="typeAndCount" type="java.util.Map">
+        <result column="type" property="type"></result>
+        <result column="count" property="count"></result>
+    </resultMap>
+    <select id="selectStaffTypeCount" resultMap="typeAndCount">
+        select type, count(*) from staff group by type
+    </select>
+
+    <select id="selectAllStaff" resultMap="StaffEntityMap">
+        select * from staff;
+    </select>
+
+    <delete id="DeleteStaffByNumber">
+        DELETE FROM staff  where number=#{number}
+    </delete>
+
+   <update id="UpdateType">
+       update staff set type=#{type} where number=#{number}
+   </update>
+
+</mapper>

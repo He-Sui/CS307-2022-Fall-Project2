@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AddModel</title>
+    <style>
+        body{
+            background-image: url("https://raw.githubusercontent.com/zeroojs/landing-ux/cbf6461ef05f9d1c00b70e190fdcc4bd858a7a48/img/register.svg");
+        }
+    </style>
+</head>
+<body>
+Model<input type="text" id="AddModel" name="AddModel">
+Product<input type="text" id="WhichProduct" name="WhichProduct">
+Price<input type="text" id="ChoosePrice" name="ChoosePrice">
+
+<button th:type="button" id="AddModel1btn" onclick="ToAddModel()">上架产品</button>
+
+</body>
+
+<script>
+    function ToAddModel() {
+        var AddModel=$("#AddModel").val();
+        var Product=$("#WhichProduct").val();
+        var ChoosePrice=$("#ChoosePrice").val();
+
+        $.ajax({
+                url: "/Add/AddModel",
+                type: "POST",
+                data: {
+                    AddModel: AddModel,
+                    Product:Product,
+                    ChoosePrice:ChoosePrice
+                },
+                success: function (Data) {
+                    if(Data.code == 500){
+                        <!-- 跳转后端处理-->
+                        window.alert(Data.message);
+                    }
+                    else {
+                        window.alert(Data.message);
+                    }
+                }
+                ,error :
+                    function () {
+                        window.alert("服务器出现问题");
+                    }
+            }
+        );
+
+
+    }
+
+
+</script>
+
+
+</html>

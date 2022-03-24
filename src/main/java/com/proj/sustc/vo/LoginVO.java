@@ -1,5 +1,6 @@
 package com.proj.sustc.vo;
 
+
 public class LoginVO {
     private String username;
     private String password;

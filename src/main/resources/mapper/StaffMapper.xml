@@ -33,4 +33,21 @@
     <select id="selectAllStaff" resultMap="StaffEntityMap">
         select * from staff;
     </select>
+
+    <delete id="DeleteStaffByNumber">
+        DELETE FROM staff  where number=#{number}
+    </delete>
+
+   <update id="UpdateType">
+       update staff set type=#{type} where number=#{number}
+   </update>
+
+    <update id="UpdatePhoneNUmber">
+        update staff set phone_number=#{phone_number} where number=#{number}
+    </update>
+
+    <select id="SelectStaffByNameAndNumber" resultMap="StaffEntityMap">
+        select * from staff where number like concat('',#{number},'%') and name like concat('',#{name},'%')
+    </select>
+
 </mapper>

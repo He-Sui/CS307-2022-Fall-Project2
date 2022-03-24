@@ -44,4 +44,8 @@ public interface ModelMapper {
      * @return list <Product>
      */
     List<Model> SelectAllModel();
+
+    void DeleteModel(String model);
+
+    Integer SelectMaxId();
 }

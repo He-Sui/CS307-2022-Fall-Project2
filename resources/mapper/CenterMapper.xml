@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.proj.sustc.mapper.CenterMapper">
+    <resultMap id="CenterEntityMap" type="com.proj.sustc.entity.Center">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+    </resultMap>
+    <select id="findByCenterName" resultMap="CenterEntityMap">
+        SELECT * FROM center WHERE name = #{name}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO center (name) values (#{name})
+    </insert>
+</mapper>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.proj.sustc.mapper.OrderMapper">
+    <resultMap id="OrdersEntityMap" type="com.proj.sustc.entity.Orders">
+        <id column="id" property="id"></id>
+        <result column="product_model" property="productModel"></result>
+        <result column="contract_number" property="contractNumber"></result>
+        <result column="salesman_number" property="salesmanNumber"></result>
+        <result column="quantity" property="quantity"></result>
+        <result column="estimated_delivery_date" property="estimatedDeliveryDate"></result>
+        <result column="lodgement_date" property="lodgementDate"></result>
+    </resultMap>
+
+    <resultMap id="ContractEntityMap" type="com.proj.sustc.entity.Contract">
+        <id column="id" property="id"></id>
+        <result column="number" property="number"></result>
+        <result column="enterprise_name" property="enterpriseName"></result>
+        <result column="date" property="date"></result>
+        <result column="contract_type" property="contractType"></result>
+        <result column="contract_manager" property="contractManager"></result>
+    </resultMap>
+    <insert id="insertOrders">
+        INSERT INTO orders (product_model, contract_number, salesman_number, quantity, estimated_delivery_date, lodgement_date) VALUES (#{productModel}, #{contractNumber}, #{salesmanNumber}, #{quantity}, #{estimatedDeliveryDate}, #{lodgementDate})
+    </insert>
+
+    <insert id="insertContract">
+        INSERT INTO contract (number, enterprise_name, date, contract_manager) values (#{number}, #{enterpriseName}, #{date}, #{contractManager})
+    </insert>
+
+    <select id="selectContractByNumber" resultMap="ContractEntityMap">
+        SELECT * FROM contract WHERE number = #{contractNumber}
+    </select>
+    
+    <select id="selectOrders" resultMap="OrdersEntityMap">
+        SELECT * FROM orders WHERE contract_number = #{contractNumber} AND product_model = #{productModel} AND salesman_number = #{salesmanNumber}
+    </select>
+
+    <delete id="deleteOrder">
+        DELETE FROM orders WHERE contract_number = #{contractNumber} AND product_model = #{productModel} AND salesman_number = #{salesmanNumber}
+    </delete>
+
+    <select id="selectOrdersByContractSalesmanSeq" resultMap="OrdersEntityMap">
+        SELECT id, product_model, contract_number, salesman_number, quantity, estimated_delivery_date, lodgement_date FROM(
+        SELECT *, RANK() OVER(ORDER BY estimated_delivery_date, product_model) FROM orders WHERE contract_number = #{contractNumber} AND salesman_number = #{salesmanNumber})sub where sub.rank = #{seq}
+    </select>
+
+
+    <select id="getContractCount" resultType="Integer">
+        SELECT COUNT(*) FROM contract
+    </select>
+
+    <select id="getOrderCount" resultType="Integer">
+        SELECT COUNT(*) FROM orders
+    </select>
+
+    <resultMap id="ModelAndSalesVolume" type="java.util.Map">
+        <result column="product_model" property="product model"></result>
+        <result column="sales_volume" property="sales volume"></result>
+    </resultMap>
+
+    <select id="getFavoriteProductModel" resultMap="ModelAndSalesVolume">
+        SELECT product_model, sales_volume FROM (
+                                                    SELECT product_model, sales_volume, RANK() OVER(ORDER BY sales_volume DESC) FROM
+                                                        (
+                                                            SELECT product_model, SUM(quantity) as sales_volume FROM orders GROUP BY product_model
+                                                        )s)ss WHERE ss.RANK = 1
+    </select>
+
+    <resultMap id="EnterpriseManagerCenter" type="java.util.Map">
+        <result column="enterprise_name" property="enterprise"></result>
+        <result column="name" property="manager"></result>
+        <result column="supply_center" property="supply center"></result>
+    </resultMap>
+
+    <select id="selectContractInfo" resultMap="EnterpriseManagerCenter">
+        SELECT enterprise_name, s.name, supply_center FROM contract JOIN staff s ON s.number = contract.contract_manager WHERE contract.number = #{contractNumber}
+    </select>
+
+
+    <resultMap id="ModelNameQuantityPriceDate" type="java.util.Map">
+        <result column="product_model" property="product model"></result>
+        <result column="name" property="salesman"></result>
+        <result column="quantity" property="quantity"></result>
+        <result column="unit_price" property="unit price"></result>
+        <result column="estimated_delivery_date" property="estimate delivery date"></result>
+        <result column="lodgement_date" property="lodgement date"></result>
+    </resultMap>
+    <select id="selectOrderInfo" resultMap="ModelNameQuantityPriceDate">
+        SELECT product_model, s.name, quantity, unit_price, estimated_delivery_date, lodgement_date FROM orders o JOIN staff s ON s.number = o.salesman_number JOIN model m ON m.model = o.product_model WHERE contract_number = #{contractNumber}
+    </select>
+
+    <update id="updateOrder">
+        UPDATE orders SET quantity = #{quantity}, estimated_delivery_date = #{estimatedDeliveryDate}, lodgement_date = #{lodgementDate} WHERE product_model = #{productModel} and contract_number = #{contractNumber} and salesman_number = #{salesmanNumber}
+    </update>
+    
+    <update id="updateContractType">
+        UPDATE contract SET contract_type = CASE WHEN end_time > current_date THEN 'In Progress' ELSE 'Finished' END FROM(
+        SELECT contract_number, MAX(lodgement_date) AS end_time FROM orders o JOIN contract c ON o.contract_number = c.number GROUP BY contract_number)sub WHERE sub.contract_number = contract.number;
+    </update>
+
+    <select id="SelectAllOrders" resultMap="OrdersEntityMap">
+        select * from orders
+    </select>
+
+    <select id="SelectOrderByModelAndArea" resultMap="OrdersEntityMap">
+
+        select o.id,o.product_model,o.contract_number,o.salesman_number,o.quantity,o.estimated_delivery_date,o.lodgement_date
+        from orders o join staff s on o.salesman_number=s.number and s.supply_center like concat('',#{area},'%') and o.product_model like concat('',#{model},'%')
+
+    </select>
+
+    <update id="UpdateOrderByDeleteSalesman">
+        update orders set salesman_number=null where salesman_number=#{salesman_number}
+    </update>
+
+    <update id="UpdateContractByDeleteStaff">
+        update contract set contract_manager=null where contract_manager=#{contract_manager}
+    </update>
+
+</mapper>

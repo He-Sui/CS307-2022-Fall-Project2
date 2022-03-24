@@ -3,6 +3,7 @@ package com.proj.sustc.service.implement;
 import com.proj.sustc.entity.Staff;
 import com.proj.sustc.entity.Stock;
 import com.proj.sustc.entity.StockInRecord;
+import com.proj.sustc.entity.TestO;
 import com.proj.sustc.mapper.CenterMapper;
 import com.proj.sustc.mapper.ModelMapper;
 import com.proj.sustc.mapper.StaffMapper;
@@ -75,13 +76,8 @@ public class StockServiceImpl implements IStockService {
     }
 
     @Override
-    public String getAvgStockByCenter() {
-        List<Map<String, Object>> list = stockMapper.getAvgStockByCenter();
-        StringBuilder sb = new StringBuilder();
-        sb.append(String.format("%-50s%-10s\n", "supply center", "average"));
-        for (Map<String, Object> res : list)
-            sb.append(String.format("%-50s%-10s\n", res.get("supply_center"), res.get("average")));
-        return sb.toString();
+    public List<Map<String, Object>> getAvgStockByCenter() {
+        return stockMapper.getAvgStockByCenter();
     }
 
     @Override
@@ -114,12 +110,32 @@ public class StockServiceImpl implements IStockService {
     }
 
     @Override
+    public RespBean DeleteModel(HttpServletRequest request, HttpServletResponse response, String model) {
+        //在mapper里的stockinrecoder写删除语句
+        System.out.println(model);
+        modelMapper.DeleteModel(model);
+        stockMapper.DeleteInStock(model);
+        return RespBean.operation_success(RespBeanEnum.OPERATION_SUCCESS);
+    }
+
+
+    @Override
     public List<Stock> getStockListByCookie(HttpServletRequest request, HttpServletResponse response, String stockModel) {
         if (stockModel == null) {
             return null;
         }
         List<Stock> stockList = (List<Stock>) redisTemplate.opsForValue().get(stockModel);
         return stockList;
+    }
+
+    @Override
+    public List<TestO> getTestObyCookie(HttpServletResponse response, HttpServletRequest request, String TestO) {
+        if (TestO == null) {
+            return null;
+        }
+        List<TestO> testOList = (List<TestO>) redisTemplate.opsForValue().get(TestO);
+        return testOList;
+
     }
 
 }

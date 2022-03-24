@@ -2,6 +2,7 @@ package com.proj.sustc.mapper;
 
 import com.proj.sustc.entity.Staff;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -26,5 +27,13 @@ public interface StaffMapper {
     List<Map<String, Object>> selectStaffTypeCount();
 
     List<Staff> selectAllStaff();
+
+    void DeleteStaffByNumber(String number);
+
+    void UpdateType(@Param("type")String type,@Param("number") String number);
+
+    void UpdatePhoneNUmber(@Param("phone_number")String phone_number,@Param("number")String number);
+
+    List<Staff> SelectStaffByNameAndNumber(@Param("number")String number,@Param("name")String name);
 
 }

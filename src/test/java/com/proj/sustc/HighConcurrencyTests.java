@@ -87,9 +87,7 @@ class HighConcurrencyTests {
         for (int i = 0; i < runnerCount; i++) {
             trs[i] = runner;
         }
-        // 用于执行多线程测试用例的Runner，将前面定义的单个Runner组成的数组传入
         MultiThreadedTestRunner mttr = new MultiThreadedTestRunner(trs);
-        // 并发执行测试内容
         mttr.runTestRunnables();
     }
 }

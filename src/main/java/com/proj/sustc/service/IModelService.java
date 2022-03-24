@@ -3,6 +3,10 @@ package com.proj.sustc.service;
 
 import com.proj.sustc.entity.Model;
 import com.proj.sustc.entity.Product;
+import com.proj.sustc.vo.RespBean;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public interface IModelService {
     /**
@@ -31,4 +35,6 @@ public interface IModelService {
      * @return information of product
      */
     Product selectProductByProductNumber(String number);
+
+    RespBean AddModel(HttpServletRequest request, HttpServletResponse response, String model, String product, Integer price);
 }

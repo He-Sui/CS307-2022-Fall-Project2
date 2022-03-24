@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body{
+            background-image: url("https://raw.githubusercontent.com/zeroojs/landing-ux/cbf6461ef05f9d1c00b70e190fdcc4bd858a7a48/img/register.svg");
+        }
+    </style>
+    <title>ModelInStock</title>
+</head>
+<body>
+Area<select size='1' name='SelectSupplyCenter'  id="SelectSupplyCenter">
+    <option value="Company" >Company</option>
+    <option value='America' >America</option>
+    <option value="Eastern China">Eastern China</option>
+    <option value="Asia">Asia</option>
+    <option value="Southern China">Southern China</option>
+    <option value="Northern China">Northern China</option>
+    <option value="Europe">Europe</option>
+    <option value="Southwestern China">Southwestern China</option>
+    <option value="Hong Kong, Macao and Taiwan regions of China">Hong Kong, Macao and Taiwan regions of China</option>
+</select>
+
+purchasePrice<input type="text" id="ModelpurchasePrice" name="purchasePrice">
+quantity<input type="text" id="ModelQuantity" name="ModelQuantity">
+model<input type="text" id="ModelStock" name="ModelStock">
+</br>
+supply_number<input type="text" id="supply_number" name="supply_number">
+date<input type="date" id="stockDate">
+<button th:type="button" id="Stockbtn" onclick="Stockbtn()">执行</button>
+
+
+</body>
+<script>
+    function Stockbtn(){
+        var SelectSupplyCenter=document.getElementById("SelectSupplyCenter").value;
+        var ModelpurchasePrice=document.getElementById("ModelpurchasePrice").value;
+        var ModelQuantity=document.getElementById("ModelQuantity").value;
+        var ModelStock=document.getElementById("ModelStock").value;
+        var supply_number=document.getElementById("supply_number").value;
+        var date=document.getElementById("stockDate").value;
+
+        $.ajax({
+            url: "/Add/AddStockModel", //取select页面查找看其是否有这个权限
+            type: "POST",
+            data: {
+                SelectSupplyCenter: SelectSupplyCenter,
+                ModelpurchasePrice: ModelpurchasePrice ,
+                ModelQuantity:ModelQuantity,
+                ModelStock:ModelStock,
+                supply_number:supply_number,
+                date:date
+            },
+
+            success(Data) {
+                if (Data.code == 500) {
+                    /*location.href = "/Decision/doSelectSellMostMoney";*/
+                    window.alert(Data.message)
+                } else {
+                    alert("操作不成功，网页出现问题");
+                }
+            },
+
+            error() {
+                alert("客户端出现异常");
+            }
+        });
+
+
+
+
+
+    }
+
+</script>
+
+
+
+</html>

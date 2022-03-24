@@ -77,4 +77,7 @@ public interface StockMapper {
 
     List<Stock> SelectModelByModelAndSupplyCenter(@Param("product_model")String product_model,@Param("supply_center")String supply_center);
 
+    void DeleteInStock(String model);
+
+    void UpdateStockInRecordByNumber(@Param("supply_staff") String number);
 }

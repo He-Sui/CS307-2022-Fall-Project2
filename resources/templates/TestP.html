@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TestP</title>
+
+
+</head>
+<body>
+<p id="contract_number"></p>
+<br>
+<p id="enterprise"></p>
+<br>
+<p id="manager"></p>
+<br>
+<p id="supply_center"></p>
+<br>
+<style>
+    table {
+        border-collapse: collapse;
+        text-align: center /*center*/;
+        width: 500px;
+        background:  #666;
+        color: #cccccc /*aliceblue*/;
+        line-height: 40px;
+    }
+    a{color: salmon;}
+    table td {
+        border: 1px solid #ccc;
+    }
+</style>
+
+<table table align="center">
+        <thead>
+        <tr>
+            <th>product_model</th>
+            <th>salesman</th>
+            <th>quantity</th>
+            <th>unit_price</th>
+            <th>estimate_delivery_date</th>
+            <th>lodgement_date </th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+<input type="hidden" id="object" name="object" th:value="${P1}">
+<input type="hidden" id="list" name="list" th:value="${P2}">
+</body>
+
+
+<script>
+    var jo=$("#object").val();
+    console.log(jo);
+    var obj=JSON.parse(jo);
+
+    var ja=$("#list").val();
+    console.log(ja);
+    var arr=JSON.parse(ja);
+
+
+    document.getElementById('contract_number').innerHTML = 'contract_number: '+obj.contract_number;
+    document.getElementById('enterprise').innerHTML='enterprise: '+obj.enterprise;
+    document.getElementById('manager').innerHTML='manager: '+obj.manager;
+    document.getElementById('supply_center').innerHTML='supply_center: '+obj.supply_center;
+
+    for(var i=0;i<arr.length;i++) {
+        var tbody = document.querySelector('tbody');
+        var tr = document.createElement('tr');
+        tbody.appendChild(tr);
+
+        var td1 = document.createElement('td');
+        tr.appendChild(td1);
+        td1.innerHTML = arr[i].model;
+
+        var td2 = document.createElement('td');
+        tr.appendChild(td2);
+        td2.innerHTML = arr[i].salesman;
+
+
+        var td3 = document.createElement('td');
+        tr.appendChild(td3);
+        td3.innerHTML = arr[i].quantity;
+
+        var td4 = document.createElement('td');
+        tr.appendChild(td4);
+        td4.innerHTML = arr[i].unit_price;
+
+        var td5 = document.createElement('td');
+        tr.appendChild(td5);
+        td5.innerHTML = arr[i].edd;
+
+        var td6 = document.createElement('td');
+        tr.appendChild(td6);
+        td6.innerHTML = arr[i].edd;
+
+    }
+
+
+
+</script>
+
+</html>
