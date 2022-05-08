@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.proj.sustc.mapper.EnterpriseMapper">
+
+    <resultMap id="EnterpriseEntityMap" type="com.proj.sustc.entity.Enterprise">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="country" property="country"></result>
+        <result column="city" property="city"></result>
+        <result column="supply_center" property="supplyCenter"></result>
+        <result column="industry" property="industry"></result>
+    </resultMap>
+    <insert id="insert">
+        INSERT INTO enterprise (name, country, city, supply_center, industry) VALUES (#{name}, #{country}, #{city}, #{supplyCenter}, #{industry})
+    </insert>
+
+    <select id="findEnterpriseByName" resultMap="EnterpriseEntityMap">
+        SELECT * FROM enterprise WHERE name = #{name}
+    </select>
+
+</mapper>

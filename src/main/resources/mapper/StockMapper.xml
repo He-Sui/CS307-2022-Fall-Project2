@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.proj.sustc.mapper.StockMapper">
+
+    <resultMap id="StockInRecordEntityMap" type="com.proj.sustc.entity.StockInRecord">
+        <id column="id" property="id"></id>
+        <result column="supply_center" property="supplyCenter"></result>
+        <result column="purchase_price" property="purchasePrice"></result>
+        <result column="quantity" property="quantity"></result>
+        <result column="product_model" property="productModel"></result>
+        <result column="supply_staff" property="supplyStaff"></result>
+        <result column="date" property="date"></result>
+    </resultMap>
+
+    <resultMap id="StockEntityMap" type="com.proj.sustc.entity.Stock">
+        <id column="id" property="id"></id>
+        <result column="supply_center" property="supplyCenter"></result>
+        <result column="product_model" property="productModel"></result>
+        <result column="quantity" property="quantity"></result>
+    </resultMap>
+    <insert id="insertRecord">
+        INSERT INTO stock_in_record (supply_center, purchase_price, quantity, product_model, supply_staff, date) VALUES (#{supplyCenter}, #{purchasePrice}, #{quantity}, #{productModel}, #{supplyStaff}, #{date})
+    </insert>
+
+    <insert id="insertStock">
+        INSERT INTO stock (supply_center, product_model, quantity) VALUES (#{supplyCenter}, #{productModel}, #{quantity})
+    </insert>
+
+    <update id="updateStock">
+        UPDATE stock SET quantity = #{quantity} WHERE supply_center = #{supplyCenter} AND product_model = #{productModel}
+    </update>
+
+    <delete id="deleteStock">
+        DELETE FROM stock WHERE supply_center = #{supplyCenter} AND product_model = #{productModel}
+    </delete>
+
+    <select id="selectStock" resultMap="StockEntityMap">
+        SELECT * FROM stock WHERE supply_center = #{supplyCenter} AND product_model = #{productModel}
+    </select>
+
+    <select id="getNeverSoldProductCount" resultType="Integer">
+        SELECT COUNT(*) FROM(SELECT DISTINCT product_model FROM stock EXCEPT SELECT DISTINCT product_model FROM orders)sub;
+    </select>
+
+    <resultMap id="supplyCenterAndAverage" type="java.util.Map">
+        <result column="supply_center" property="supply_center"></result>
+        <result column="average" property="average"></result>
+    </resultMap>
+
+    <select id="getAvgStockByCenter" resultMap="supplyCenterAndAverage">
+        SELECT supply_center , ROUND(1.0 * SUM(quantity)/COUNT(*), 1) AS average FROM stock GROUP BY supply_center ORDER BY supply_center
+    </select>
+
+    <resultMap id="CenterModelQuantity" type="java.util.Map">
+        <result column="supply_center" property="supply center"></result>
+        <result column="product_model" property="product model"></result>
+        <result column="quantity" property="quantity"></result>
+    </resultMap>
+
+    <select id="findProductStockByNumber" resultMap="CenterModelQuantity">
+        SELECT supply_center, product_model, quantity FROM stock JOIN model m ON m.model = stock.product_model WHERE product_number = #{productNumber}
+    </select>
+
+
+</mapper>
