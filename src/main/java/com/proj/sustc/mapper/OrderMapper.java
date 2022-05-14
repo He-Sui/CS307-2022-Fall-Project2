@@ -95,4 +95,11 @@ public interface OrderMapper {
      * @return product model, salesman, quantity, unit price, estimated delivery date, lodgement date
      */
     List<Map<String, Object>> selectOrderInfo(String contractNumber);
+
+    /**
+     * Update order by contract number, product model and salesman number
+     * @param orders information of order
+     * @return The number of affected rows
+     */
+    Integer updateOrder(Orders orders);
 }

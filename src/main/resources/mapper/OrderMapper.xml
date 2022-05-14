@@ -90,4 +90,8 @@
     <select id="selectOrderInfo" resultMap="ModelNameQuantityPriceDate">
         SELECT product_model, s.name, quantity, unit_price, estimated_delivery_date, lodgement_date FROM orders o JOIN staff s ON s.number = o.salesman_number JOIN model m ON m.model = o.product_model WHERE contract_number = #{contractNumber}
     </select>
+
+    <update id="updateOrder">
+        UPDATE orders SET quantity = #{quantity}, estimated_delivery_date = #{estimatedDeliveryDate}, lodgement_date = #{lodgementDate} WHERE product_model = #{productModel} and contract_number = #{contractNumber} and salesman_number = #{salesmanNumber}
+    </update>
 </mapper>

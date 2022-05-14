@@ -111,10 +111,12 @@ public class OrderServiceImpl implements IOrderService {
                     throw new DeleteException("Unknown error when delete stock");
             } else if (stockMapper.updateStock(stock) != 1)
                 throw new UpdateException("Unknown error when update stock");
-            if (orders.getQuantity() == 0)
-                if (orderMapper.deleteOrder(orders.getContractNumber(), orders.getProductModel(), orders.getSalesmanNumber()) != 1)
-                    throw new DeleteException("Unknown error when delete orders");
         }
+        if (orders.getQuantity() == 0) {
+            if (orderMapper.deleteOrder(orders.getContractNumber(), orders.getProductModel(), orders.getSalesmanNumber()) != 1)
+                throw new DeleteException("Unknown error when delete orders");
+        } else if (orderMapper.updateOrder(orders) != 1)
+            throw new UpdateException("Unknown error when update orders");
     }
 
     @Override
