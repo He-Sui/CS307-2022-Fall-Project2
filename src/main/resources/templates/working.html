@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+
+    <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>工作界面</title>
+
+</head>
+<body>
+<!--<p th:text="'Hello:'+${login_in_user.getUsername()}"></p>-->
+<button th:type="button" id="back" onclick="goBack()">返回</button>
+
+<button th:type="button" id="select" onclick="goSelect()">"查看信息"</button>
+
+
+
+</body>
+
+<script>
+    function goBack() {
+        $.ajax({
+            url:"/Back/toBack1",
+            success: function(Data){
+              if(Data.code==500){
+                  window.location.href="/Decision/doBack1";
+              }else {
+                  window.alert("操作不成功，网页出现问题");
+              }
+            },
+            error: function () {
+                window.alert("客户端出现异常");
+            }
+
+            }
+        );
+    }
+
+    function goSelect(){
+        $.ajax({
+            url: "/Select/toSelect",
+            success: function(Data){
+                if(Data.code==500){
+                    window.location.href="/Decision/doSelect";
+                }else {
+                    window.alert("操作不成功，网页出现问题");
+                }
+            },
+            error: function () {
+                window.alert("客户端出现异常");
+            }
+            }
+
+        );
+
+    }
+
+</script>
+
+</html>

@@ -24,4 +24,7 @@ public interface StaffMapper {
 
 
     List<Map<String, Object>> selectStaffTypeCount();
+
+    List<Staff> selectAllStaff();
+
 }

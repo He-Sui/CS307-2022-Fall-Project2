@@ -31,4 +31,8 @@
     <insert id="insertProduct">
         INSERT INTO product (number, name) values (#{number}, #{name})
     </insert>
+
+    <select id="SelectAllModel" resultMap="ModelEntityMap">
+        select * from model;
+    </select>
 </mapper>

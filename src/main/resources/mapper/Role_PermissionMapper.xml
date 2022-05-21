@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.proj.sustc.mapper.Role_PermissionMapper">
+    <resultMap id="Role_PermissionEntityMapper" type="com.proj.sustc.entity.Role_Permission">
+       <id column="id" property="id"></id>
+        <result column="role_id" property="role_id"></result>
+        <result column="permission_id" property="permission_id"></result>
+    </resultMap>
+
+    <select id="SelectByRoleIdAndPermission" resultMap="Role_PermissionEntityMapper">
+        select * from Role_Permission rp where rp.role_id=#{role_id} and rp.permission_id=#{permission_id}
+    </select>
+
+</mapper>

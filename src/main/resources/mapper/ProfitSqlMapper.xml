@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.proj.sustc.mapper.OrderMapper">
+    <resultMap id="ProfitSqlEntity" type="com.proj.sustc.entity.ProfitSql">
+        <result column="supply_center" property="supply_center"></result>
+        <result column="income" property="income"></result>
+        <result column="expense" property="expense"></result>
+        <result column="profit" property="profit"></result>
+    </resultMap>
+    <select id="SelectProfit" resultMap="ProfitSqlEntity">
+        select s1.name as supply_center, income, expense, income - expense as profit from(
+                                                                                           (
+                                                                                              select name, case when sub.sum is null then 0 else sub.sum end as income  from
+                                                                                                  (select supply_center, sum(quantity * m.unit_price) from orders join contract c on c.number = orders.contract_number join staff s on orders.salesman_number = s.number
+                                                                                                                                                                  join model m on orders.product_model = m.model where c.date between #{start} and #{end} group by supply_center)sub right join center on sub.supply_center = center.name)as s1 join
+                                                                                         (select name, case when sub2.sum is null then 0 else sub2.sum end as expense from
+                                                                                             (select supply_center, sum(purchase_price * stock_in_record.quantity) from stock_in_record where date between #{start} and #{end} group by supply_center)sub2 right join center c on c.name = sub2.supply_center)as s2 on s1.name = s2.name);
+
+    </select>
+
+</mapper>

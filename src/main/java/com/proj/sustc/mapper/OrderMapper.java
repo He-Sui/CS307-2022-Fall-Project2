@@ -2,8 +2,11 @@ package com.proj.sustc.mapper;
 
 import com.proj.sustc.entity.Contract;
 import com.proj.sustc.entity.Orders;
+import com.proj.sustc.entity.ProfitSql;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -108,4 +111,15 @@ public interface OrderMapper {
      * @return The number of affected rows
      */
     Integer updateContractType();
+
+    /**
+     * Find all the orders
+     * @param
+     * @return Object of Orders
+     */
+    List<Orders> SelectAllOrders();
+
+    List<ProfitSql> SelectProfit(@Param("start") Date start, @Param("end")Date end);
+
+    List<Orders> SelectOrderByModelAndArea(@Param("area")String area,@Param("model")String model);
 }

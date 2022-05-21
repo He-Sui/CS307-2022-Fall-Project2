@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.proj.sustc.mapper.Login_inMapper">
+    <resultMap id="Login_inEntityMap" type="com.proj.sustc.entity.Login_in">
+        <id column="username" property="username"></id>
+        <result column="password" property="password"></result>
+        <result column="salt" property="salt"></result>
+        <result column="type" property="type"></result>
+    </resultMap>
+
+    <insert id="insertLogin_in">
+        INSERT INTO login_in (username,password,salt,type) values (#{name},#{password},#{salt},#{type})
+    </insert>
+
+    <select id="selectByUsername" resultMap="Login_inEntityMap">
+              select * from login_in where username=#{username};
+    </select>
+</mapper>
+

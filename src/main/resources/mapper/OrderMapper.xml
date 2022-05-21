@@ -99,4 +99,15 @@
         UPDATE contract SET contract_type = CASE WHEN end_time > current_date THEN 'In Progress' ELSE 'Finished' END FROM(
         SELECT contract_number, MAX(lodgement_date) AS end_time FROM orders o JOIN contract c ON o.contract_number = c.number GROUP BY contract_number)sub WHERE sub.contract_number = contract.number;
     </update>
+
+    <select id="SelectAllOrders" resultMap="OrdersEntityMap">
+        select * from orders
+    </select>
+
+    <select id="SelectOrderByModelAndArea" resultMap="OrdersEntityMap">
+
+        select o.id,o.product_model,o.contract_number,o.salesman_number,o.quantity,o.estimated_delivery_date,o.lodgement_date
+        from orders o join staff s on o.salesman_number=s.number and s.supply_center like concat('%',#{area},'%') and o.product_model like concat('%',#{model},'%')
+
+    </select>
 </mapper>

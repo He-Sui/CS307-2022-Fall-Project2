@@ -1,10 +1,15 @@
 package com.proj.sustc.service;
 
 import com.proj.sustc.entity.Orders;
+import com.proj.sustc.object.ProductModelCount;
+import com.proj.sustc.object.Profit;
+import com.proj.sustc.object.StaffSell;
+import com.proj.sustc.vo.RespBean;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 public interface IOrderService {
     /**
@@ -74,4 +79,29 @@ public interface IOrderService {
      * Update contract type
      */
     void updateContractType();
+
+    RespBean FindSellMostMoney(HttpServletResponse response, HttpServletRequest request);
+
+    StaffSell getStaffSellByCookie(HttpServletResponse response, HttpServletRequest request, String maxStaff);
+
+    RespBean FindSellMostProduct(HttpServletResponse response, HttpServletRequest request);
+
+    RespBean FindBestSellProduct(HttpServletRequest request, HttpServletResponse response);
+
+    ProductModelCount getProductModelCountByCookie(HttpServletResponse response, HttpServletRequest request, String max_product);
+
+    RespBean FinancialReport(HttpServletResponse response,HttpServletRequest request, String login_in_user);
+
+    Profit getProfitByCookie(HttpServletResponse response, HttpServletRequest request, String AllAreasProfit);
+
+    RespBean FindProfit(HttpServletResponse response, HttpServletRequest request, String login_in_user, String area,String start,String end);
+
+    RespBean FindProfitBySql(HttpServletResponse response, HttpServletRequest request, String login_in_user, String area, String start, String end);
+
+    Object getProfitsqlByCookie(HttpServletResponse response, HttpServletRequest request, String profitStr);
+
+    RespBean doSelectOrder(HttpServletResponse response, HttpServletRequest request, String model, String area);
+
+    List<Orders> getListOrdersByCookie(HttpServletResponse response,HttpServletRequest request,String orders);
+
 }

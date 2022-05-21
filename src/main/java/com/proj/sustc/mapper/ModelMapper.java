@@ -38,4 +38,10 @@ public interface ModelMapper {
      */
     Product selectProductByNumber(String number);
 
+    /**
+     * select by product number
+     * @param
+     * @return list <Product>
+     */
+    List<Model> SelectAllModel();
 }

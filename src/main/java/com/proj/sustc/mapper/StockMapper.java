@@ -3,6 +3,7 @@ package com.proj.sustc.mapper;
 import com.proj.sustc.entity.StockInRecord;
 import com.proj.sustc.entity.Stock;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -69,4 +70,11 @@ public interface StockMapper {
      * @return supply center, product model and quantity
      */
     List<Map<String, Object>> findProductStockByNumber(String productNumber);
+
+    List<StockInRecord> SelectAllStockRecord();
+
+    List<StockInRecord> SelectModelPurchasePriceBySupplyCenterAndModel(@Param("supply_center")String supply_center, @Param("product_model") String product_model);
+
+    List<Stock> SelectModelByModelAndSupplyCenter(@Param("product_model")String product_model,@Param("supply_center")String supply_center);
+
 }

@@ -1,0 +1,344 @@
+<!--
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select</title>
+</head>
+<body>
+  <p>Select</p>
+  <p id="SMM"></p>
+
+  <button th:type="button" id="SellMostMoney" onclick="FindSellMostMoney()">销售额最多的员工</button>
+  <button th:type="button" id="SellMostProduct" onclick="FindSellMostProduct()">销售数量最多的员工</button>
+  <button th:type="button" id="BestSellProduct" onclick="BestSellProduct()">最畅销的产品</button>
+  <button th:type="button" id="FinancialReport" onclick="FinancialReport()">财务报告</button>
+
+
+</body>
+<script>
+    function FindSellMostMoney() {
+        $.ajax({
+            url: "/Select/FindSellMostMoney",   //取select页面查找看其是否有这个权限
+            success(Data) {
+                if (Data.code == 500) {
+                    location.href = "/Decision/doSelectSellMostMoney";
+                    document.getElementById("SMM").innerHTML = `销售额最大的员工是：${Max_sales.getName()} ; 销售业绩是：${Max_sales.getSales()}`
+                } else {
+                    alert("操作不成功，网页出现问题");
+                }
+            },
+
+            error() {
+                alert("客户端出现异常");
+            }
+        });
+    }
+    function FindSellMostProduct() {
+        $.ajax({
+            url: "/Select/FindSellMostProduct",   //取select页面查找看其是否有这个权限
+            success(Data) {
+                if (Data.code == 500) {
+                    location.href = "/Decision/doFindSellMostProduct";
+                    /* document.getElementById("SMM").innerHTML = `销售数量最大的员工是：${Max_sales.getName()} ; 销售数量业绩是：${Max_sales.getCount()}`*/
+
+                } else {
+                    alert("操作不成功，网页出现问题");
+                }
+            },
+
+            error() {
+                alert("客户端出现异常");
+            }
+        });
+
+
+    }
+    function BestSellProduct() {
+        $.ajax({
+            url: "/Select/FindBestSellProduct",   //取select页面查找看其是否有这个权限
+            success(Data) {
+                if (Data.code == 500) {
+                    location.href = "/Decision/doBestSellProduct";
+                  /*  document.getElementById("SMM").innerHTML = `销售额最大的员工是：${Max_sales.getName()} ; 销售业绩是：${Max_sales.getSales()}`*/
+                } else {
+                    alert("操作不成功，网页出现问题");
+                }
+            },
+
+            error() {
+                alert("客户端出现异常");
+            }
+        });
+
+    }
+    function FinancialReport(){
+        $.ajax({
+            url: "/Select/FinancialReport",   //取select页面查找看其是否有这个权限
+            success(Data) {
+                if (Data.code == 500) {
+                    location.href = "/Decision/FinancialReport";
+                } else {
+                    alert(Data.message);
+                }
+            },
+            error() {
+                alert("客户端出现异常");
+            }
+        });
+
+    }
+
+
+
+</script>
+
+</html>-->
+
+
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select</title>
+</head>
+<body>
+<p>Select</p>
+<p id="SMM"></p>
+
+<button th:type="button" id="SellMostMoney" onclick="FindSellMostMoney()">销售额最多的员工</button>
+<button th:type="button" id="SellMostProduct" onclick="FindSellMostProduct()">销售数量最多的员工</button>
+<button th:type="button" id="BestSellProduct" onclick="BestSellProduct()">最畅销的产品</button>
+<button th:type="button" id="FinancialReport" onclick="FinancialReport()">财务报告</button>
+
+<select size='1' name='ProfitInselect'  id="ProfitInformation">
+    <option value="Company" >Company</option>
+    <option value='America' >America</option>
+    <option value="Eastern China">Eastern China</option>
+    <option value="Asia">Asia</option>
+    <option value="Southern China">Southern China</option>
+    <option value="Northern China">Northern China</option>
+    <option value="Europe">Europe</option>
+    <option value="Southwestern China">Southwestern China</option>
+    <option value="Hong Kong, Macao and Taiwan regions of China">Hong Kong, Macao and Taiwan regions of China</option>
+</select>
+
+ 起始日期 <input type="date" id="start">
+ 结束日期<input type="date" id="end">
+<button th:type="button" id="Profit" onclick="Profit()">查看利润</button>
+<button th:type="button" onclick="goNext()">去其他界面</button>
+
+  <form>
+  <input type="text" id="model" name="model_number">model
+  <input type="text" id="area" name="area">area
+  <button th:type="button" id="submitOrder" onclick="SelectOrder()">查询订单</button>
+  </form>
+
+  <form>
+      <input type="text" id="FindModel" name="FindModel">StockModel
+      <input type="text" id="SupplyCenter" name="SupplyCenter">SupplyCenter
+      <button th:type="button" id="FindStockInRecord" onclick="FindStockRecord()">查询库存产品</button>
+  </form>
+
+</body>
+<script>
+    //搬掉
+    function FindSellMostMoney() {
+        $.ajax({
+            url: "/Select/FindSellMostMoney",   //取select页面查找看其是否有这个权限
+            success(Data) {
+                if (Data.code == 500) {
+                    location.href = "/Decision/doSelectSellMostMoney";
+                    document.getElementById("SMM").innerHTML = `销售额最大的员工是：${Max_sales.getName()} ; 销售业绩是：${Max_sales.getSales()}`
+                } else {
+                    alert("操作不成功，网页出现问题");
+                }
+            },
+
+            error() {
+                alert("客户端出现异常");
+            }
+        });
+    }
+    //搬掉
+    function FindSellMostProduct() {
+        $.ajax({
+            url: "/Select/FindSellMostProduct",   //取select页面查找看其是否有这个权限
+            success(Data) {
+                if (Data.code == 500) {
+                    location.href = "/Decision/doFindSellMostProduct";
+
+                } else {
+                    alert("操作不成功，网页出现问题");
+                }
+            },
+
+            error() {
+                alert("客户端出现异常");
+            }
+        });
+
+
+    }
+    //搬掉
+    function BestSellProduct() {
+        $.ajax({
+            url: "/Select/FindBestSellProduct",   //取select页面查找看其是否有这个权限
+            success(Data) {
+                if (Data.code == 500) {
+                    location.href = "/Decision/doBestSellProduct";
+                    /*  document.getElementById("SMM").innerHTML = `销售额最大的员工是：${Max_sales.getName()} ; 销售业绩是：${Max_sales.getSales()}`*/
+                } else {
+                    alert("操作不成功，网页出现问题");
+                }
+            },
+
+            error() {
+                alert("客户端出现异常");
+            }
+        });
+
+    }
+    //搬掉
+    function FinancialReport(){
+        $.ajax({
+            url: "/Select/FinancialReport",   //取select页面查找看其是否有这个权限
+            success(Data) {
+                if (Data.code == 500) {
+                    location.href = "/Decision/FinancialReport";
+                } else {
+                    alert(Data.message);
+                }
+            },
+            error() {
+                alert("客户端出现异常");
+            }
+        });
+
+    }
+
+    //搬掉
+    function Profit(){
+        var area=document.getElementById("ProfitInformation").value;
+      /*  var start=new Date(document.getElementById("start"));
+        var end=new Date(document.getElementById("end"));*/
+        var start=document.getElementById("start").value;
+        var end=document.getElementById("end").value;
+
+        $.ajax({
+                url: "/Select/FindProfit",
+                type: "POST",
+                data: {
+                      Area: area ,
+                      start: start ,
+                      end: end
+                },success: function (Data) {
+                    if(Data.code == 500){
+                        <!-- 跳转后端处理-->
+                        window.location.href="/Decision/doFindProfit";
+                    }
+                    else {
+                        window.alert(Data.message);
+                    }
+                }
+                ,error :
+                    function () {
+                        window.alert("服务器出现问题");
+                    }
+
+            }
+
+        );
+    }
+
+    //搬掉
+    function SelectOrder() {
+        var model=$("#model").val();
+        var area=$("#area").val();
+        $.ajax({
+            url: "/Select/SelectOrder",
+            type: "POST",
+            data: {
+               model: model,
+               area: area
+            },
+            success: function (Data) {
+                if(Data.code == 500){
+                    <!-- 跳转后端处理-->
+                    window.location.href="/Decision/doSelectOrder";
+                }
+                else {
+                    window.alert(Data.message);
+                }
+            }
+            ,error :
+                function () {
+                    window.alert("服务器出现问题");
+                }
+            }
+        );
+
+    }
+
+
+    function FindStockRecord(){
+        var StockModel=$("#FindModel").val();
+        var SupplyCenter=$("#SupplyCenter").val();
+        $.ajax({
+                url: "/Select/SelectModel",
+                type: "POST",
+                data: {
+                    StockModel: StockModel,
+                    SupplyCenter: SupplyCenter
+                },
+                success: function (Data) {
+                    if(Data.code == 500){
+                        <!-- 跳转后端处理-->
+                        window.location.href="/Decision/doSelectStockModel";
+                    }
+                    else {
+                        window.alert(Data.message);
+                    }
+                }
+                ,error :
+                    function () {
+                        window.alert("服务器出现问题");
+                    }
+            }
+        );
+
+
+
+    }
+
+    function goNext(){
+        $.ajax({
+            url: "/Select/GoNext",   //取select页面查找看其是否有这个权限
+            success: function(Data) {
+                if (Data.code == 500) {
+                   window. location.href = "/Decision/doGoNext";
+                } else {
+                    alert("操作不成功，网页出现问题");
+                }
+            },
+
+            error() {
+                alert("客户端出现异常");
+            }
+        });
+
+    }
+
+</script>
+
+</html>

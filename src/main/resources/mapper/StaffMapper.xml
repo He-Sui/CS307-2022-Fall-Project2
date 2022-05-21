@@ -6,6 +6,7 @@
 
     <resultMap id="StaffEntityMap" type="com.proj.sustc.entity.Staff">
         <id column="id" property="id"></id>
+        <result column="number" property="number"></result>
         <result column="name" property="name"></result>
         <result column="phone_number" property="phoneNumber"></result>
         <result column="gender" property="gender"></result>
@@ -29,4 +30,7 @@
         select type, count(*) from staff group by type
     </select>
 
+    <select id="selectAllStaff" resultMap="StaffEntityMap">
+        select * from staff;
+    </select>
 </mapper>

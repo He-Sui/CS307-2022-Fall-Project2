@@ -63,5 +63,18 @@
         SELECT supply_center, product_model, quantity FROM stock JOIN model m ON m.model = stock.product_model WHERE product_number = #{productNumber}
     </select>
 
+    <select id="SelectAllStockRecord" resultMap="StockInRecordEntityMap">
+        select * from stock_in_record
+    </select>
 
+    <resultMap id="ModelPurchase" type="java.util.Map">
+        <result column="purchase_price" property="purchase_price"></result>
+    </resultMap>
+    <select id="SelectModelPurchasePriceBySupplyCenterAndModel" resultMap="StockInRecordEntityMap">
+        select * from stock_in_record where supply_center=#{supply_center} and product_model=#{product_model}
+    </select>
+
+    <select id="SelectModelByModelAndSupplyCenter" resultMap="StockEntityMap">
+        select * from stock s where s.product_model like concat('%',#{product_model},'%') and s.supply_center like concat('%',supply_center,'%')
+    </select>
 </mapper>

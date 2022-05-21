@@ -9,10 +9,17 @@ import com.proj.sustc.mapper.StaffMapper;
 import com.proj.sustc.mapper.StockMapper;
 import com.proj.sustc.service.IStockService;
 import com.proj.sustc.service.exception.*;
+import com.proj.sustc.utils.CookieUtil;
+import com.proj.sustc.utils.UUIDUtil;
+import com.proj.sustc.vo.RespBean;
+import com.proj.sustc.vo.RespBeanEnum;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +33,8 @@ public class StockServiceImpl implements IStockService {
     private StockMapper stockMapper;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @Override
     @Transactional
@@ -85,5 +94,37 @@ public class StockServiceImpl implements IStockService {
         return sb.toString();
     }
 
+    @Override
+    public RespBean doSelectModel(HttpServletRequest request, HttpServletResponse response, String stockModel, String SupplyCenter) {
+        List<Stock> stockList = stockMapper.SelectModelByModelAndSupplyCenter(stockModel, SupplyCenter);
+        //开始判断Supply是否为“”，空的话还要返回一个总和
+        if (SupplyCenter.equals("")) {
+            Stock AllAreas = new Stock();
+            AllAreas.setProductModel(stockModel);
+            AllAreas.setSupplyCenter("Company");
+            AllAreas.setQuantity(0);
+            Integer quantity = 0;
+            AllAreas.setId(0);
+            for (Stock stock : stockList) {
+                quantity += stock.getQuantity();
+            }
+            AllAreas.setQuantity(quantity);
+            stockList.add(AllAreas);
+        }
+        //开始用Cookie存
+        String StockModel = UUIDUtil.uuid();
+        redisTemplate.opsForValue().set(StockModel, stockList);
+        CookieUtil.setCookie(request, response, "STOCK_MODEL", StockModel);
+        return RespBean.operation_success(RespBeanEnum.OPERATION_SUCCESS);
+    }
+
+    @Override
+    public List<Stock> getStockListByCookie(HttpServletRequest request, HttpServletResponse response, String stockModel) {
+        if (stockModel == null) {
+            return null;
+        }
+        List<Stock> stockList = (List<Stock>) redisTemplate.opsForValue().get(stockModel);
+        return stockList;
+    }
 
 }
