@@ -171,7 +171,7 @@ public class MainTests {
     @Test
     public void TestE_in_stoke() {
         try {
-            BufferedReader bf = new BufferedReader(new FileReader("src/test/data/task1_in_stoke_test_data_publish.csv"));
+            BufferedReader bf = new BufferedReader(new FileReader("src/test/data/in_stoke_test.csv"));
             bf.readLine();
             String line;
             String[] info;
@@ -198,22 +198,44 @@ public class MainTests {
         }
     }
 
+//    @Test
+//    public void TestFPlaceOrder() {
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//        try {
+//            BufferedReader bf = new BufferedReader(new FileReader("src/test/data/task2_test_data_publish.csv"));
+//            bf.readLine();
+//            String line;
+//            String[] info;
+//            while ((line = bf.readLine()) != null) {
+//                info = line.split(",");
+//                try {
+//                    if (info[7].equals(""))
+//                        orderService.placeOrder(info[0], info[1], info[2], Integer.valueOf(info[3]), info[4], simpleDateFormat.parse(info[5]), simpleDateFormat.parse(info[6]), null, info[8], info[9]);
+//                    else {
+//                        orderService.placeOrder(info[0], info[1], info[2], Integer.valueOf(info[3]), info[4], simpleDateFormat.parse(info[5]), simpleDateFormat.parse(info[6]), simpleDateFormat.parse(info[7]), info[8], info[9]);
+//                    }
+//                } catch (ServiceException e) {
+//                    System.err.println(e.getMessage());
+//                }
+//
+//            }
+//        } catch (Exception e) {
+//            System.err.println(e.getMessage());
+//        }
+//    }
+
     @Test
     public void TestFPlaceOrder() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         try {
-            BufferedReader bf = new BufferedReader(new FileReader("src/test/data/task2_test_data_publish.csv"));
+            BufferedReader bf = new BufferedReader(new FileReader("src/test/data/task2_test_data_final_public.tsv"));
             bf.readLine();
             String line;
             String[] info;
             while ((line = bf.readLine()) != null) {
-                info = line.split(",");
+                info = line.split("\t");
                 try {
-                    if (info[7].equals(""))
-                        orderService.placeOrder(info[0], info[1], info[2], Integer.valueOf(info[3]), info[4], simpleDateFormat.parse(info[5]), simpleDateFormat.parse(info[6]), null, info[8], info[9]);
-                    else {
-                        orderService.placeOrder(info[0], info[1], info[2], Integer.valueOf(info[3]), info[4], simpleDateFormat.parse(info[5]), simpleDateFormat.parse(info[6]), simpleDateFormat.parse(info[7]), info[8], info[9]);
-                    }
+                    orderService.placeOrder(info[0], info[1], info[2], Integer.valueOf(info[3]), info[4], simpleDateFormat.parse(info[5]), simpleDateFormat.parse(info[6]), simpleDateFormat.parse(info[7]), info[8], info[9]);
                 } catch (ServiceException e) {
                     System.err.println(e.getMessage());
                 }
@@ -228,7 +250,7 @@ public class MainTests {
     public void TestGUpdateOrder() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         try {
-            BufferedReader bf = new BufferedReader(new FileReader("src/test/data/task34_update_test_data_publish.tsv"));
+            BufferedReader bf = new BufferedReader(new FileReader("src/test/data/update_final_test.tsv"));
             bf.readLine();
             String line;
             String[] info;
@@ -258,7 +280,7 @@ public class MainTests {
     @Test
     public void TestHDeleteOrder() {
         try {
-            BufferedReader bf = new BufferedReader(new FileReader("src/test/data/task34_delete_test_data_publish.tsv"));
+            BufferedReader bf = new BufferedReader(new FileReader("src/test/data/delete_final.tsv"));
             bf.readLine();
             String line;
             String[] info;

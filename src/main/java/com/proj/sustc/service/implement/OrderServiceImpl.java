@@ -8,6 +8,7 @@ import com.proj.sustc.service.exception.InsertException;
 import com.proj.sustc.service.exception.PlaceOrderException;
 import com.proj.sustc.service.exception.UpdateException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +32,7 @@ public class OrderServiceImpl implements IOrderService {
     @Override
     @Transactional
     public void placeOrder(String contractNumber, String enterpriseName, String productModel, Integer quantity, String contractManager, Date contractDate, Date estimatedDate, Date lodgementDate, String salesmanNumber, String contractType) {
-        if (contractNumber == null || enterpriseName == null || productModel == null || quantity == null || contractManager == null || contractDate == null || estimatedDate == null || salesmanNumber == null || contractType == null)
+        if (contractNumber == null || enterpriseName == null || productModel == null || quantity == null || contractManager == null || contractDate == null || estimatedDate == null || salesmanNumber == null)
             throw new PlaceOrderException("Order information should not be null");
         Staff salesman = staffMapper.selectByNumber(salesmanNumber);
         Staff manager = staffMapper.selectByNumber(contractManager);
@@ -65,7 +66,6 @@ public class OrderServiceImpl implements IOrderService {
         if (orderMapper.selectContractByNumber(contractNumber) == null) {
             Contract contract = new Contract();
             contract.setEnterpriseName(enterpriseName);
-            contract.setContractType(contractType);
             contract.setContractManager(contractManager);
             contract.setDate(contractDate);
             contract.setNumber(contractNumber);
@@ -160,10 +160,16 @@ public class OrderServiceImpl implements IOrderService {
         sb.append(String.format("enterprise: %s\n", info.get("enterprise")));
         sb.append(String.format("manager: %s\n", info.get("manager")));
         sb.append(String.format("supply center: %s\n", info.get("supply center")));
-        sb.append(String.format("%-50s%-20s%-15s%-15s%-25s%-20s\n", "product model", "salesman", "quantity", "unit price", "estimate delivery date", "lodgement date"));
+        sb.append(String.format("%-60s%-20s%-15s%-15s%-25s%-20s\n", "product model", "salesman", "quantity", "unit price", "estimate delivery date", "lodgement date"));
         List<Map<String, Object>> list = orderMapper.selectOrderInfo(contractNumber);
         for (Map<String, Object> res : list)
-            sb.append(String.format("%-50s%-20s%-15s%-15s%-25s%-20s\n", res.get("product model"), res.get("salesman"), res.get("quantity"), res.get("unit price"), res.get("estimate delivery date"), res.get("lodgement date")));
+            sb.append(String.format("%-60s%-20s%-15s%-15s%-25s%-20s\n", res.get("product model"), res.get("salesman"), res.get("quantity"), res.get("unit price"), res.get("estimate delivery date"), res.get("lodgement date")));
         return sb.toString();
+    }
+
+    @Override
+    @Scheduled(cron = "0/30 * * * * ? ")
+    public void updateContractType() {
+        orderMapper.updateContractType();
     }
 }

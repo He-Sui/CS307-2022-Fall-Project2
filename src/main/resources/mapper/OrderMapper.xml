@@ -26,7 +26,7 @@
     </insert>
 
     <insert id="insertContract">
-        INSERT INTO contract (number, enterprise_name, date, contract_type, contract_manager) values (#{number}, #{enterpriseName}, #{date}, #{contractType}, #{contractManager})
+        INSERT INTO contract (number, enterprise_name, date, contract_manager) values (#{number}, #{enterpriseName}, #{date}, #{contractManager})
     </insert>
 
     <select id="selectContractByNumber" resultMap="ContractEntityMap">
@@ -93,5 +93,10 @@
 
     <update id="updateOrder">
         UPDATE orders SET quantity = #{quantity}, estimated_delivery_date = #{estimatedDeliveryDate}, lodgement_date = #{lodgementDate} WHERE product_model = #{productModel} and contract_number = #{contractNumber} and salesman_number = #{salesmanNumber}
+    </update>
+    
+    <update id="updateContractType">
+        UPDATE contract SET contract_type = CASE WHEN end_time > current_date THEN 'In Progress' ELSE 'Finished' END FROM(
+        SELECT contract_number, MAX(lodgement_date) AS end_time FROM orders o JOIN contract c ON o.contract_number = c.number GROUP BY contract_number)sub WHERE sub.contract_number = contract.number;
     </update>
 </mapper>

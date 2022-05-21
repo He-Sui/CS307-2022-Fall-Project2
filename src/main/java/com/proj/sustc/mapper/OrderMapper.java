@@ -102,4 +102,10 @@ public interface OrderMapper {
      * @return The number of affected rows
      */
     Integer updateOrder(Orders orders);
+
+    /**
+     * Update the type of the contract
+     * @return The number of affected rows
+     */
+    Integer updateContractType();
 }

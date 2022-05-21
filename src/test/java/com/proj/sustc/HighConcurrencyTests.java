@@ -1,41 +1,23 @@
 package com.proj.sustc;
 
-import com.proj.sustc.entity.Staff;
 import com.proj.sustc.service.IStaffService;
 import net.sourceforge.groboutils.junit.v1.MultiThreadedTestRunner;
 import net.sourceforge.groboutils.junit.v1.TestRunnable;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.sql.DataSource;
-import java.sql.SQLException;
 
 @SpringBootTest
-class SustcApplicationTests implements Runnable {
+@RunWith(SpringRunner.class)
+class HighConcurrencyTests {
     @Autowired
     DataSource dataSource;
     @Autowired
     IStaffService iStaffService;
-
-    @Test
-    void contextLoads() {
-    }
-
-    @Override
-    public void run() {
-        Staff staff = iStaffService.selectByNumber("11311024");
-        try {
-            System.out.println(dataSource.getConnection());
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Test
-    void getConnection() throws SQLException {
-
-    }
 
     @Test
     public void methodATest() throws Throwable {
@@ -43,11 +25,11 @@ class SustcApplicationTests implements Runnable {
         TestRunnable runner = new TestRunnable() {
             @Override
             public void runTest() throws Throwable {
-                System.out.println(iStaffService.selectByNumber("11311024"));
+                System.out.println(dataSource.getConnection());
             }
         };
         // 并发线程数量
-        int runnerCount = 5;
+        int runnerCount = 100;
         TestRunnable[] trs = new TestRunnable[runnerCount];
         for (int i = 0; i < runnerCount; i++) {
             trs[i] = runner;

@@ -54,4 +54,9 @@ public class OrderMapperTests {
     public void getFavoriteProductModel(){
         System.out.println(orderMapper.getFavoriteProductModel());
     }
+
+    @Test
+    public void updateContractType(){
+        orderMapper.updateContractType();
+    }
 }

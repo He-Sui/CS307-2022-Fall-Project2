@@ -69,4 +69,9 @@ public interface IOrderService {
      * Product_model, salesman_name, quantity, unit_price, estimate_delivery_date, lodgement_date.
      */
     String getContractInfo(String contractNumber);
+
+    /**
+     * Update contract type
+     */
+    void updateContractType();
 }
