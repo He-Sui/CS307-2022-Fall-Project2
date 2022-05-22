@@ -54,7 +54,7 @@ public class OrderServiceImpl implements IOrderService {
     private static SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
     @Override
     @Transactional
-    public void placeOrder(String contractNumber, String enterpriseName, String productModel, Integer quantity, String contractManager, Date contractDate, Date estimatedDate, Date lodgementDate, String salesmanNumber, String contractType) {
+    public void placeOrder(String contractNumber, String enterpriseName, String productModel, Integer quantity, String contractManager, Date contractDate, Date estimatedDate, Date lodgementDate, String salesmanNumber) {
         if (contractNumber == null || enterpriseName == null || productModel == null || quantity == null || contractManager == null || contractDate == null || estimatedDate == null || salesmanNumber == null)
             throw new PlaceOrderException("Order information should not be null");
         Staff salesman = staffMapper.selectByNumber(salesmanNumber);
@@ -108,7 +108,7 @@ public class OrderServiceImpl implements IOrderService {
 
     @Override
     @Transactional
-    public void updateOrder(Orders orders) {
+    public void  updateOrder(Orders orders) {
         if (orders == null || orders.getContractNumber() == null || orders.getProductModel() == null || orders.getSalesmanNumber() == null || orders.getQuantity() == null || orders.getEstimatedDeliveryDate() == null)
             throw new UpdateException("Order information should not be null");
         Orders originOrder = orderMapper.selectOrders(orders.getContractNumber(), orders.getProductModel(), orders.getSalesmanNumber());
@@ -191,7 +191,7 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     @Override
-    @Scheduled(cron = "0/10 * * * * ? ")
+    @Scheduled(fixedRate = 10000)
     public void updateContractType() {
         orderMapper.updateContractType();
     }

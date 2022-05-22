@@ -94,6 +94,5 @@ public class Login_inMapperTests implements Runnable{
         login_in.setUsername("12010923");
         login_in.setType("CEO");
          login_inMapper.insert(login_in);
-
     }
 }

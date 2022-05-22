@@ -35,9 +35,9 @@ public class OrderTests {
                 info = line.split(",");
                 try {
                     if (info[7].equals(""))
-                        orderService.placeOrder(info[0], info[1], info[2], Integer.valueOf(info[3]), info[4], simpleDateFormat.parse(info[5]), simpleDateFormat.parse(info[6]), null, info[8], info[9]);
+                        orderService.placeOrder(info[0], info[1], info[2], Integer.valueOf(info[3]), info[4], simpleDateFormat.parse(info[5]), simpleDateFormat.parse(info[6]), null, info[8]);
                     else {
-                        orderService.placeOrder(info[0], info[1], info[2], Integer.valueOf(info[3]), info[4], simpleDateFormat.parse(info[5]), simpleDateFormat.parse(info[6]), simpleDateFormat.parse(info[7]), info[8], info[9]);
+                        orderService.placeOrder(info[0], info[1], info[2], Integer.valueOf(info[3]), info[4], simpleDateFormat.parse(info[5]), simpleDateFormat.parse(info[6]), simpleDateFormat.parse(info[7]), info[8]);
                     }
                 } catch (ServiceException e) {
                     System.err.println(e.getMessage());

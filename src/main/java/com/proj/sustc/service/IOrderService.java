@@ -23,9 +23,8 @@ public interface IOrderService {
      * @param estimatedDate Estimated delivery date of the product
      * @param lodgementDate Actual delivery date of the product
      * @param salesmanNumber The ID of the salesman
-     * @param contractType Current type of the contract type
      */
-    void placeOrder(String contractNumber, String enterprise, String productModel, Integer quantity, String contractManager, Date contractDate, Date estimatedDate, Date lodgementDate, String salesmanNumber, String contractType);
+    void placeOrder(String contractNumber, String enterprise, String productModel, Integer quantity, String contractManager, Date contractDate, Date estimatedDate, Date lodgementDate, String salesmanNumber);
 
 
     /**

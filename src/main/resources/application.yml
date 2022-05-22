@@ -21,13 +21,13 @@ spring:
 
       idle-timeout: 1800000
 
-      maximum-pool-size: 10
+      maximum-pool-size: 50000
 
       auto-commit: true
 
       max-lifetime: 1800000
 
-      connection-timeout: 30000
+      connection-timeout: 30000000
 
       connection-test-query: SELECT 1
 

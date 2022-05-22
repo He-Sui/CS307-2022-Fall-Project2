@@ -235,7 +235,7 @@ public class MainTests {
             while ((line = bf.readLine()) != null) {
                 info = line.split("\t");
                 try {
-                    orderService.placeOrder(info[0], info[1], info[2], Integer.valueOf(info[3]), info[4], simpleDateFormat.parse(info[5]), simpleDateFormat.parse(info[6]), simpleDateFormat.parse(info[7]), info[8], info[9]);
+                    orderService.placeOrder(info[0], info[1], info[2], Integer.valueOf(info[3]), info[4], simpleDateFormat.parse(info[5]), simpleDateFormat.parse(info[6]), simpleDateFormat.parse(info[7]), info[8]);
                 } catch (ServiceException e) {
                     System.err.println(e.getMessage());
                 }
@@ -334,8 +334,8 @@ public class MainTests {
 
     @Test
     public void TestPGetContractInfo() {
-        System.out.println(orderService.getContractInfo("CSE0000106"));
-        System.out.println(orderService.getContractInfo("CSE0000209"));
-        System.out.println(orderService.getContractInfo("CSE0000306"));
+        System.out.println(orderService.getContractInfo("CSE0000318"));
+        System.out.println(orderService.getContractInfo("CSE0000425"));
+        System.out.println(orderService.getContractInfo("CSE0000120"));
     }
 }

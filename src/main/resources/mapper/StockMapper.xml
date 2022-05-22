@@ -37,7 +37,7 @@
     </delete>
 
     <select id="selectStock" resultMap="StockEntityMap">
-        SELECT * FROM stock WHERE supply_center = #{supplyCenter} AND product_model = #{productModel}
+        SELECT * FROM stock WHERE supply_center = #{supplyCenter} AND product_model = #{productModel} FOR UPDATE
     </select>
 
     <select id="getNeverSoldProductCount" resultType="Integer">
