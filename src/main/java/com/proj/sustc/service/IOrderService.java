@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public interface IOrderService {
     /**
@@ -72,7 +73,7 @@ public interface IOrderService {
      * All orders in contract including:
      * Product_model, salesman_name, quantity, unit_price, estimate_delivery_date, lodgement_date.
      */
-    String getContractInfo(String contractNumber);
+    List<Map<String, Object>> getContractInfo(String contractNumber);
 
     /**
      * Update contract type
@@ -102,5 +103,4 @@ public interface IOrderService {
     RespBean doSelectOrder(HttpServletResponse response, HttpServletRequest request, String model, String area);
 
     List<Orders> getListOrdersByCookie(HttpServletResponse response,HttpServletRequest request,String orders);
-
 }

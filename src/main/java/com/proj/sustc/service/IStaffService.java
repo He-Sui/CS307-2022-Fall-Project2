@@ -23,5 +23,5 @@ public interface IStaffService {
      * Return the numbers of people for all types of staffs
      * @return two columns: staff_type, count
      */
-    String getAllStaffCount();
+    List<Map<String, Object>> getAllStaffCount();
 }

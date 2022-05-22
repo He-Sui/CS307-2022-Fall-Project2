@@ -85,13 +85,8 @@ public class StockServiceImpl implements IStockService {
     }
 
     @Override
-    public String getProductByNumber(String productNumber) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(String.format("%-50s%-50s%-10s\n", "supply center", "product model", "quantity"));
-        List<Map<String, Object>> list = stockMapper.findProductStockByNumber(productNumber);
-        for (Map<String, Object> res : list)
-            sb.append(String.format("%-50s%-50s%-10s\n", res.get("supply center"), res.get("product model"), res.get("quantity")));
-        return sb.toString();
+    public List<Map<String, Object>> getProductByNumber(String productNumber) {
+        return stockMapper.findProductStockByNumber(productNumber);
     }
 
     @Override

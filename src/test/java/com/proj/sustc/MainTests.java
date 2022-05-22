@@ -299,7 +299,14 @@ public class MainTests {
 
     @Test
     public void TestIGetAllStaffCount() {
-        System.out.println(staffService.getAllStaffCount());
+        List<Map<String, Object>> list = staffService.getAllStaffCount();
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("%-20s%-10s\n", "type", "count"));
+        for (Map<String, Object> res : list) {
+            sb.append(String.format("%-20s%-10s", res.get("type"), res.get("count")));
+            sb.append("\n");
+        }
+        System.out.println(sb.toString());
     }
 
     @Test
@@ -329,13 +336,27 @@ public class MainTests {
 
     @Test
     public void TestOGetProductByNumber() {
-        System.out.println(stockService.getProductByNumber("A50L172"));
+        List<Map<String, Object>> list = stockService.getProductByNumber("A50L172");
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("%-50s%-50s%-10s\n", "supply center", "product model", "quantity"));
+        for (Map<String, Object> res : list)
+            sb.append(String.format("%-50s%-50s%-10s\n", res.get("supply center"), res.get("product model"), res.get("quantity")));
+        System.out.println(sb.toString());
     }
 
     @Test
     public void TestPGetContractInfo() {
-        System.out.println(orderService.getContractInfo("CSE0000318"));
-        System.out.println(orderService.getContractInfo("CSE0000425"));
-        System.out.println(orderService.getContractInfo("CSE0000120"));
+        String contractNumber = "CSE0000318";
+        StringBuilder sb = new StringBuilder();
+        List<Map<String, Object>> list = orderService.getContractInfo(contractNumber);
+        sb.append(String.format("contract number: %s\n", contractNumber));
+        sb.append(String.format("enterprise: %s\n", list.get(0).get("enterprise")));
+        sb.append(String.format("manager: %s\n", list.get(0).get("manager")));
+        sb.append(String.format("supply center: %s\n", list.get(0).get("supply center")));
+        sb.append(String.format("%-60s%-20s%-15s%-15s%-25s%-20s\n", "product model", "salesman", "quantity", "unit price", "estimate delivery date", "lodgement date"));
+        boolean check = false;
+        for (int i = 1; i < list.size();++i)
+            sb.append(String.format("%-60s%-20s%-15s%-15s%-25s%-20s\n", list.get(i).get("product model"), list.get(i).get("salesman"), list.get(i).get("quantity"), list.get(i).get("unit price"), list.get(i).get("estimate delivery date"), list.get(i).get("lodgement date")));
+        System.out.println(sb.toString());
     }
 }

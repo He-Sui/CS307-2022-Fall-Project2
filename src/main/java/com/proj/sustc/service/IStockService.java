@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 
 public interface IStockService {
     /**
@@ -40,7 +41,7 @@ public interface IStockService {
      * @param productNumber product number
      * @return supply center, product model and quantity
      */
-    String getProductByNumber(String productNumber);
+    List<Map<String, Object>> getProductByNumber(String productNumber);
 
     RespBean doSelectModel(HttpServletRequest request, HttpServletResponse response, String stockModel, String SupplyCenter);
 

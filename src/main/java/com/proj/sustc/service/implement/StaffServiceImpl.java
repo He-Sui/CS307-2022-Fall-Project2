@@ -47,14 +47,7 @@ public class StaffServiceImpl implements IStaffService {
     }
 
     @Override
-    public String getAllStaffCount() {
-        List<Map<String, Object>> list = staffMapper.selectStaffTypeCount();
-        StringBuilder sb = new StringBuilder();
-        sb.append(String.format("%-20s%-10s\n", "type", "count"));
-        for (Map<String, Object> res : list) {
-            sb.append(String.format("%-20s%-10s", res.get("type"), res.get("count")));
-            sb.append("\n");
-        }
-        return sb.toString();
+    public List<Map<String, Object>> getAllStaffCount() {
+        return staffMapper.selectStaffTypeCount();
     }
 }
