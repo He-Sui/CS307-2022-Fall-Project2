@@ -14,7 +14,7 @@ create table enterprise(
                            name varchar not null unique,
                            country  varchar not null,
                            city varchar,
-                           supply_center varchar not null constraint enterprise_fk references center(name),
+                           supply_center varchar not null,
                            industry varchar not null
 );
 
@@ -23,7 +23,6 @@ create table model(
                       model varchar not null unique ,
                       unit_price integer not null,
                       product_number varchar not null
-                          constraint model_fk references product(number)
 );
 
 create table staff(
@@ -35,53 +34,40 @@ create table staff(
                       age integer not null,
                       type varchar not null ,
                       supply_center varchar not null
-                          constraint staff_pk references center(name)
 );
 
 create table contract(
                          id serial primary key ,
                          number varchar not null unique,
-                         enterprise_name  varchar not null
-                             constraint contract_fk1 references enterprise(name)      ,
+                         enterprise_name  varchar not null,
                          date DATE not null,
-                         contract_type varchar not null ,
+                         contract_type varchar,
                          contract_manager varchar(8) not null
-                             constraint contract_fk references staff(number)
 );
 
 create table orders(
                        id serial primary key ,
-                       product_model varchar not null
-                           constraint orders_fk1 references model(model),
-                       contract_number varchar not null
-                           constraint orders_fk2 references contract(number),
-                       salesman_number varchar(8) not null
-                           constraint orders_fk references staff(number),
+                       product_model varchar not null,
+                       contract_number varchar not null,
+                       salesman_number varchar(8) not null,
                        quantity integer not null ,
                        estimated_delivery_date DATE not null ,
                        lodgement_date DATE
 );
 
-
 create table stock(
                       id serial not null primary key ,
-                      supply_center varchar not null
-                          constraint center_stock_fk references center(name),
-                      product_model varchar not null
-                          constraint stock_model_fk references model(model),
-                      quantity INTEGER NOT NULL,
-                      constraint stock_uq unique (supply_center, product_model)
+                      supply_center varchar not null,
+                      product_model varchar not null,
+                      quantity INTEGER NOT NULL
 );
 
 create table stock_in_record(
                                 id serial not null primary key ,
-                                supply_center varchar not null
-                                    constraint center_record_fk references center(name),
+                                supply_center varchar not null,
                                 purchase_price INTEGER not null ,
                                 quantity INTEGER NOT NULL,
-                                product_model varchar not null
-                                    constraint record_model_fk1 references model(model),
-                                supply_staff varchar(8) not null
-                                    constraint record_staff_fk references staff(number),
+                                product_model varchar not null,
+                                supply_staff varchar(8) not null,
                                 date DATE not null
 );
